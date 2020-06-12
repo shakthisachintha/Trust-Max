@@ -1,0 +1,723 @@
+/* =========== Developer css ================*/
+
+.top {
+	margin-top: -15px;
+}
+
+.headerrightlink {
+  height: 36px;
+  margin: 10px 0;
+}
+.headerrightlink ul {
+  display: inline-block;
+  *display: inline;
+  /* IE7 inline-block hack */
+
+  *zoom: 1;
+  margin-left: 0;
+  margin-bottom: 0;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+.headerrightlink li {
+  display: inline;
+}
+.headerrightlink a {
+  float: left;
+  padding: 0 14px;
+  line-height: 34px;
+  text-decoration: none;
+  border: 1px solid #ddd;
+  border-left-width: 0;
+}
+.headerrightlink a:hover,
+.headerrightlink .active a {
+  background-color: #f5f5f5;
+}
+.headerrightlink .active a {
+  color: #999999;
+  cursor: default;
+}
+.headerrightlink .disabled span,
+.headerrightlink .disabled a,
+.headerrightlink .disabled a:hover {
+  color: #999999;
+  background-color: transparent;
+  cursor: default;
+}
+.headerrightlink li:first-child a {
+  border-left-width: 1px;
+  -webkit-border-radius: 3px 0 0 3px;
+  -moz-border-radius: 3px 0 0 3px;
+  border-radius: 3px 0 0 3px;
+}
+.headerrightlink li:last-child a {
+  -webkit-border-radius: 0 3px 3px 0;
+  -moz-border-radius: 0 3px 3px 0;
+  border-radius: 0 3px 3px 0;
+}
+.headerrightlink-centered {
+  text-align: center;
+}
+.headerrightlink-right {
+  text-align: right;
+}
+
+.headerrightprofile {
+	padding:5px;
+	border:1px solid #ddd;
+	width:200px;
+	float:right;
+	border-radius: 5px;
+}
+
+.headerrightprofile img {
+	float:left;
+}
+
+.headerrightprofile span#inner {
+	float:left;
+	display:block;
+	padding-left:10px;
+	text-align:center;
+}
+
+.headerrightprofile span#inner .clear {
+	border:1px solid #DDD;
+	margin:3px 0;
+}
+
+.clear {
+	clear:both;
+}
+
+#whithelink {
+	color:#091647;
+	font-size:12px;
+}
+
+.service-box2 {
+	padding: 10px;
+	/* border: 1px solid #EFEFEF; */
+	border: 1px solid #dadada;
+}
+
+.service-box2 .login input {
+	width: 187px;
+}
+
+.banner {
+	/* margin-top: 40px; */
+	padding: 10px 10px 10px 0;
+	text-align: justify;
+}
+
+.banner2 {
+	width: 888px;
+	float: left;
+	border: 1px #e5e5e5 solid;
+}
+
+ul.slide {
+	margin: 0;
+	padding: 0;
+	height: 80px;
+	list-style-type: none;
+}
+
+ul.slide li {
+	float: left;
+	list-style-type: none;
+}
+
+ul.slide li img {
+	border: 1px solid silver;
+	height: 80px;
+}
+
+.bottomslide {
+	/* width:221px; */
+	width:206px;
+	height:82px;
+	background-color:#F9F9F9;
+	border-right:1px #D5D5D5 solid;
+	padding:7px;
+	color:#999999;
+}
+
+.bottomslide img {
+	float:left;
+	border:1px #D5D5D5 solid;
+	width: 80px;
+	-moz-border-radius:5px;
+	-webkit-border-radius:5px;
+	border-radius:5px;
+	background-color:#FFF;
+}
+
+.bottomslide span {
+	float:left;
+	display:block;
+	padding:0 7px;
+	width: 125px;
+}
+
+.bottomslide span a {
+	float:right;
+}
+
+.bottomslide span p {
+	margin:0;
+}
+
+a.greenbtn {
+	background-color:#091647;
+	-moz-border-radius:5px;
+	-webkit-border-radius:5px;
+	border-radius:5px;
+	border:1px solid #091647;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-size:14px;
+	font-weight:bold;
+	padding:3px 10px;
+	text-decoration:none;
+}
+a.greenbtn:hover {
+	background-color:#638f18;
+}
+a.greenbtn:active {
+	position:relative;
+	top:1px;
+}
+
+button.greenbtn {
+	background-color:#4a7002;
+	-moz-border-radius:5px;
+	-webkit-border-radius:5px;
+	border-radius:5px;
+	border:1px solid #74b807;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	/* font-size:12px; */
+	font-weight:bold;
+	/* padding:2px 10px; */
+	text-decoration:none;
+	font-size: 14px;
+    padding: 10px 25px;
+}
+button.greenbtn:hover {
+	background-color:#638f18;
+}
+button.greenbtn:active {
+	position:relative;
+	top:1px;
+}
+
+.price {
+	box-shadow: 0px 0px 1px #091647;
+	border: 2px #091647 solid;
+	padding: 3px;
+	background-color: #091647;
+	color: #FFF;
+}
+
+.read {
+	width: 90px;
+	float: right;
+}
+
+.corner {
+	width: 0px;
+	height: 0px;
+	border-style: solid;
+	border-width: 1px 0 65px 90px;
+	border-color: transparent transparent #FFC52F;
+	box-shadow: 3px 3px 5px #B71C44;
+	line-height: 0px;
+	_border-color: #000000 #000000 #007bff #000000;
+	_filter: progid:DXImageTransform.Microsoft.Chroma(color='#000000');
+	position: absolute; 
+	margin-top: -67px; 
+	right: 0px;
+}
+
+.corner span {
+	-webkit-transform: rotate(-35deg); 
+	-moz-transform: rotate(-35deg);	
+	font-weight: bold;
+	color: #FFFFFF; 
+	position: absolute; 
+	right: 1px; 
+	bottom: -38px;
+}
+
+.service-box .caption .content {
+	height: 130px;
+	margin:5px 0;
+}
+
+.logform
+{   
+    width:350px;
+	margin-top:10px;
+	padding-top:20px;
+	padding-bottom:20px;
+	border:1px #CCC solid;
+	background-color:#e5e5e5;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	float:left;
+	
+	position: relative;
+	margin-left: -177px;
+	left: 52%;
+}
+
+.cb-enable, .cb-disable, .cb-enable span, .cb-disable span { background: url(../images/switch.gif) repeat-x; display: block; float: left; }
+.cb-enable span, .cb-disable span { line-height: 30px; display: block; background-repeat: no-repeat; font-weight: bold; }
+.cb-enable span { background-position: left -90px; padding: 0 10px; }
+.cb-disable span { background-position: right -180px;padding: 0 10px; }
+.cb-disable.selected { background-position: 0 -30px; }
+.cb-disable.selected span { background-position: right -210px; color: #fff; }
+.cb-enable.selected { background-position: 0 -60px; }
+.cb-enable.selected span { background-position: left -150px; color: #fff; font-weight: 100; font-size: 14px;}
+.switch label { cursor: pointer; }
+
+.profile-info {
+	border:1px #CCC solid;
+	padding: 9px;
+	/* width: 920px; */
+}
+
+ul.proleftmenu {
+	list-style:inside;
+	list-style-type:none;
+	margin: 0;
+}
+
+ul.proleftmenu li {
+	padding:4px;
+	border:1px #FFF solid;
+}
+
+ul.proleftmenu li:hover {
+	border:1px #CCC solid;
+	box-shadow: 0px 0px 7px #CCC;
+}
+
+ul.proleftmenu li a:hover {
+	text-decoration:none;
+}
+
+ul.proleftmenu li.current {
+	border:1px #CCC solid;
+	box-shadow: 0px 0px 7px #CCC;
+}
+
+.profiletable {
+	border: 1px solid #EFEFEF;
+	margin-top: -6px;
+}
+
+.profiletable tr td {
+	text-align:center;
+	padding:6px 3px;
+}
+
+/* ==================== regitration tile ===================== */
+
+
+.barmenu ul {
+   margin-left:-30px;
+}
+
+.barmenu ul li {
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
+    width: 120px;
+    margin: 5px 1px 0 0;
+    text-indent: 35px;
+	
+    position: relative;
+}
+
+.barmenu ul li:before {
+    content: " ";
+    height: 0;
+    width: 0;
+	
+    position: absolute;
+    left: -2px;
+    border-style: solid;
+    border-width: 15px 0 15px 15px;
+    border-color: transparent transparent transparent #fff;
+    z-index: 0;
+}
+
+.barmenu ul li:first-child:before {
+    border-color: transparent;
+}
+
+.barmenu ul li a:after {
+    content: " ";
+    height: 0;
+    width: 0;
+	
+    position: absolute;
+    right: -15px;
+    border-style: solid;
+    border-width: 15px 0 15px 15px;
+    border-color: transparent transparent transparent #ccc;
+    z-index: 10;
+}
+
+.barmenu ul li.active a {
+    background: orange;
+	color:#fff;
+    z-index: 100;
+}
+
+.barmenu ul li.active a:after {
+    border-left-color: orange;
+}
+
+.barmenu ul li a {
+    display: block;
+    background: #ccc;
+}
+
+.barmenu ul li a:hover {
+    background: pink;
+	text-decoration: none;
+}
+
+.barmenu ul li a:hover:after {
+    border-color: transparent transparent transparent pink; 
+}
+
+.form2
+{   
+    width:535px;
+	margin-left:10px;
+	margin-top:15px;
+	padding-top:20px;
+	border:1px #CCC solid;
+	float:left;
+	background-color:#e5e5e5;
+	-webkit-border-radius: 10px;
+-moz-border-radius: 10px;
+border-radius: 10px;
+}
+.form3
+{   
+    width:700px;
+	margin-left:150px;
+	margin-top:30px;
+	padding-top:20px;
+	border:1px #CCC solid;
+	float:left;
+	background-color:#f2f2f2;
+	-webkit-border-radius: 10px;
+-moz-border-radius: 10px;
+border-radius: 10px;
+}
+
+.styledselect-day {
+	width: 70px;
+	float: left;
+	margin-right: 30px;
+}
+
+.styledselect-month {
+	width: 100px;
+	float: left;
+	margin-right: 30px;
+}
+
+.sidebar-line {
+	width: 150px;
+	margin-bottom: 10px;
+	border: 1px #F00 solid;
+}
+
+/******************************************************************/
+                          /*NEW CSS*/
+/*****************************************************************/
+@import 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css';
+
+
+h4.profle_head{
+	border: 1px #CCC solid;
+    padding: 10px;
+    margin-bottom: 3px;
+	font-weight:bold;
+}
+
+p.prfl_lst_login{
+	font-size:12px;
+	color:#333;
+}
+
+ul.prfl_lft_menu{
+	padding:0;
+	margin:0;
+}
+
+ul.prfl_lft_menu li {
+	line-height:2;
+}
+ul.prfl_lft_menu li.current{
+	 border: 1px #81b41d solid;
+    box-shadow: 0px 0px 7px #81b41d;
+    background: #81b41d;
+}
+ul.prfl_lft_menu li.current a {
+	    border: 1px #81b41d solid;
+    box-shadow: 0px 0px 7px #81b41d;
+    background: #81b41d;
+    color: #FFF;
+}
+ul.prfl_lft_menu li a {
+	font-size:16px;
+	color:#000;
+	padding-left:10px;
+}
+
+
+table.new_tbl{
+	border:1px solid #dadada;
+}
+table.new_tbl tr td{
+	font-size:16px;
+}
+ table.new_tbl2 tr td{  border-top: 1px solid transparent !important;}
+
+ul.nw_footr_list{
+	padding:0;
+	margin:0;
+	list-style:none;
+}
+ul.nw_footr_list li {
+	line-height:1.5;
+}
+ul.nw_footr_list li a {
+	color:#000;
+	font-size:14px;
+}
+
+h4.navbar-inner{
+	font-size: 21px;
+    margin-top: 0 !important;
+    color: #81b41d;
+    font-weight: bold;
+}
+
+hr.ln{
+	margin-top: 20px;
+    margin-bottom: 20px;
+    border: 0;
+    border-top: 1px solid #000000;
+}
+
+hr{
+	margin-top: 20px;
+    margin-bottom: 20px;
+    border: 0;
+    border-top: 1px solid #000000;
+}
+
+.profl_all .form-group label{
+	font-size:16px;
+	color:#848484;
+}
+.profl_all .form-group p{
+	font-size:17px;
+}
+
+.profl_all .form-group .form-control{
+	min-width:70px;
+}
+
+.mt20{ margin-top:20px;}
+
+.mttop{
+  margin-top: 4%;
+}
+
+.tree ul li a img{width:70px;}
+.tree ul {
+	padding-top: 20px; position: relative;
+	padding-left:0px;
+	
+	transition: all 0.5s;
+	-webkit-transition: all 0.5s;
+	-moz-transition: all 0.5s;
+}
+
+.tree li {
+	float: left; text-align: center;
+	list-style-type: none;
+	position: relative;
+	padding: 20px 5px 0 5px;
+	
+	transition: all 0.5s;
+	-webkit-transition: all 0.5s;
+	-moz-transition: all 0.5s;
+}
+
+/*We will use ::before and ::after to draw the connectors*/
+
+.tree li::before, .tree li::after{
+	content: '';
+	position: absolute; top: 0; right: 50%;
+	border-top: 2px solid #428bca;
+	width: 50%; height: 20px;
+}
+.tree li::after{
+	right: auto; left: 50%;
+	border-left: 2px solid #428bca;
+}
+
+/*We need to remove left-right connectors from elements without 
+any siblings*/
+.tree li:only-child::after, .tree li:only-child::before {
+	display: none;
+}
+
+/*Remove space from the top of single children*/
+.tree li:only-child{ padding-top: 0;}
+
+/*Remove left connector from first child and 
+right connector from last child*/
+.tree li:first-child::before, .tree li:last-child::after{
+	border: 0 none;
+}
+/*Adding back the vertical connector to the last nodes*/
+.tree li:last-child::before{
+	border-right: 2px solid #428bca;
+	border-radius: 0 5px 0 0;
+	-webkit-border-radius: 0 5px 0 0;
+	-moz-border-radius: 0 5px 0 0;
+}
+.tree li:first-child::after{
+	border-radius: 5px 0 0 0;
+	-webkit-border-radius: 5px 0 0 0;
+	-moz-border-radius: 5px 0 0 0;
+}
+
+/*Time to add downward connectors from parents*/
+.tree ul ul::before{
+	content: '';
+	position: absolute; top: 0; left: 50%;
+	border-left: 2px solid #428bca;
+	width: 0; height: 20px;
+}
+
+.tree li a{
+	/*border: 2px solid #428bca;*/
+	padding: 5px 20px;
+	text-decoration: none;
+	color: #666;
+	font-family: arial, verdana, tahoma;
+	font-size: 13px;
+	display: inline-block;
+	
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	
+	transition: all 0.5s;
+	-webkit-transition: all 0.5s;
+	-moz-transition: all 0.5s;
+}
+
+/*Time for some hover effects*/
+/*We will apply the hover effect the the lineage of the element also*/
+.tree li a:hover, .tree li a:hover+ul li a {
+	background: #f1f1f1; color: #000; 
+}
+/*Connector styles on hover*/
+.tree li a:hover+ul li::after, 
+.tree li a:hover+ul li::before, 
+.tree li a:hover+ul::before, 
+.tree li a:hover+ul ul::before{
+	border-color:  #94a0b4;
+}
+
+/*Thats all. I hope you enjoyed it.
+Thanks :)*/
+p.details
+{
+  margin: 0px 0px 0px 0px;
+  font-size: 14px;
+  line-height: 22px;
+  font-weight: 600;
+}
+
+/*********************************************************************/
+
+a.tooltip1 span
+{
+    border-radius:4px;
+    box-shadow: 5px 5px 8px #CCC;
+	position:absolute;
+	z-index:9999;
+}
+
+
+a.tooltip1 {
+    outline: medium none;
+}
+a.tooltip1 strong {
+    line-height: 30px;
+}
+a.tooltip1:hover {
+    text-decoration: none;
+}
+a.tooltip1 span {
+    display: none;
+    line-height: 18px;
+    margin-top: -20px;
+    padding: 5px;
+	position:relative;
+    z-index: 99999;
+}
+a.tooltip1:hover span {
+    background: #FFF;
+    border:1px solid #25A79F;
+    color: #111;
+    display: inline;
+    position: absolute;
+}
+.callout {
+    border: 0 none;
+    bottom: -10px;
+    left: 15px;
+    position: absolute;
+    z-index: 20;
+	display:none;
+}
+a.tooltip1 span {
+    border-radius: 4px;
+    box-shadow: 5px 5px 8px #ccc;
+	position:relative;
+	z-index:99999;
+	min-width: 190px;
+    margin-left: 60px;
+    top: 10px;
+}
+
+img.tt{
+	position:absolute;
+	top:0;
+	z-index:999;
+}

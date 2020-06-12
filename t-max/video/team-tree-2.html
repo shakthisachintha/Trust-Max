@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>V6asia User Panel- Dashboard</title>
+        <link rel="shortcut icon" href="img/favicon.png">
+        <!--STYLESHEET-->
+        <!--=================================================-->
+        <!--Roboto Slab Font [ OPTIONAL ] -->
+        <link href="http://fonts.googleapis.com/css?family=Roboto+Slab:400,300,100,700" rel="stylesheet">
+        <link href="http://fonts.googleapis.com/css?family=Roboto:500,400italic,100,700italic,300,700,500italic,400" rel="stylesheet">
+        <!--Bootstrap Stylesheet [ REQUIRED ]-->
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <!--Jasmine Stylesheet [ REQUIRED ]-->
+        <link href="css/style.css" rel="stylesheet">
+        <!--Font Awesome [ OPTIONAL ]-->
+        <link href="plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <!--Switchery [ OPTIONAL ]-->
+        <link href="plugins/switchery/switchery.min.css" rel="stylesheet">
+        <!--Bootstrap Select [ OPTIONAL ]-->
+        <link href="plugins/bootstrap-select/bootstrap-select.min.css" rel="stylesheet">
+        <!--Bootstrap Table [ OPTIONAL ]-->
+        <link href="plugins/datatables/media/css/dataTables.bootstrap.css" rel="stylesheet">
+        <link href="plugins/datatables/extensions/Responsive/css/dataTables.responsive.css" rel="stylesheet">
+        <link href="css/demo/jasmine.css" rel="stylesheet">
+        <!--SCRIPT-->
+        <!--=================================================-->
+        <!--Page Load Progress Bar [ OPTIONAL ]-->
+        <link href="plugins/pace/pace.min.css" rel="stylesheet">
+        <script src="plugins/pace/pace.min.js"></script>
+    </head>
+    <body>
+        <div id="container" class="effect mainnav-lg navbar-fixed mainnav-fixed">
+            <!--NAVBAR-->
+            <!--===================================================-->
+            <header id="navbar">
+                <div id="navbar-container" class="boxed">
+                    <!--Brand logo & name-->
+                    <!--================================-->
+                    <div class="navbar-header">
+                        <a href="index.html" class="navbar-brand">
+                            
+                            <div class="brand-title">
+                                <img src="img/logo.png">
+								<!-- <span class="brand-text">V6asia</span> -->
+                            </div>
+                        </a>
+                    </div>
+                    <!--================================-->
+                    <!--End brand logo & name-->
+                    <!--Navbar Dropdown-->
+                    <!--================================-->
+                    <div class="navbar-content clearfix">
+                        <ul class="nav navbar-top-links pull-left">
+                            <!--Navigation toogle button-->
+                            <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                            <li class="tgl-menu-btn">
+                                <a class="mainnav-toggle" href="#"> <i class="fa fa-navicon fa-lg"></i> </a>
+                            </li>
+                        </ul>
+                        <ul class="nav navbar-top-links pull-right">
+
+                            <!--Fullscreen toogle button-->
+                            <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                              <li class="hidden-xs" id="toggleFullscreen">
+                                <a class="icon icon-fullscreen" data-toggle="fullscreen" href="#" role="button">
+                                   <span class="sr-only">Toggle fullscreen</span>
+                                </a>
+                              </li>
+                            <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                            <!--End Fullscreen toogle button-->
+
+                            <!--Language selector-->
+                            <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                            <li class="dropdown">
+                                <a id="demo-lang-switch" class="lang-selector dropdown-toggle" href="#" data-toggle="dropdown"> <span class="lang-selected"> <img class="lang-flag" src="img/flags/united-kingdom.png" alt="English"> <span class="lang-id">EN</span> <span class="lang-name">English</span> </span>
+                                </a>
+                                <!--Language selector menu-->
+                                <ul class="head-list dropdown-menu with-arrow">
+                                    <li>
+                                        <!--English-->
+                                        <a href="#" class="active"> <img class="lang-flag" src="img/flags/united-kingdom.png" alt="English"> <span class="lang-id">EN</span> <span class="lang-name">English</span> </a>
+                                    </li>
+                                    <li>
+                                        <!--France-->
+                                        <a href="#"> <img class="lang-flag" src="img/flags/france.png" alt="France"> <span class="lang-id">FR</span> <span class="lang-name">Fran&ccedil;ais</span> </a>
+                                    </li>
+                                    <li>
+                                        <!--Germany-->
+                                        <a href="#"> <img class="lang-flag" src="img/flags/germany.png" alt="Germany"> <span class="lang-id">DE</span> <span class="lang-name">Deutsch</span> </a>
+                                    </li>
+                                    <li>
+                                        <!--Italy-->
+                                        <a href="#"> <img class="lang-flag" src="img/flags/italy.png" alt="Italy"> <span class="lang-id">IT</span> <span class="lang-name">Italiano</span> </a>
+                                    </li>
+                                    <li>
+                                        <!--Spain-->
+                                        <a href="#"> <img class="lang-flag" src="img/flags/spain.png" alt="Spain"> <span class="lang-id">ES</span> <span class="lang-name">Espa&ntilde;ol</span> </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                            <!--End language selector-->
+                            <!--User dropdown-->
+                            <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                            <li id="dropdown-user" class="dropdown">
+                                <a href="#" data-toggle="dropdown" class="dropdown-toggle text-right">
+                                    <span class="pull-right"> <img class="img-circle img-user media-object" src="img/av1.png" alt="Profile Picture"> </span>
+                                    <div class="username hidden-xs">Thomes</div>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right with-arrow">
+                                    <!-- User dropdown menu -->
+                                    <ul class="head-list">
+                                        <li>
+                                            <a href="#"> <i class="fa fa-user fa-fw fa-lg"></i> Profile </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">  <i class="fa fa-gear fa-fw fa-lg"></i> Settings </a>
+                                        </li>
+                                        <li>
+                                            <a href="#"> <i class="fa fa-sign-out fa-fw"></i> Logout </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+
+                            <!-- <li class="hidden-xs">
+                                <a id="demo-toggle-aside" href="#">
+                                <i class="fa fa-navicon fa-lg"></i>
+                                </a>
+                            </li> -->
+                            <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+                            <!--End Navigation toogle button-->
+                        </ul>
+                    </div>
+                    <!--================================-->
+                    <!--End Navbar Dropdown-->
+                </div>
+            </header>
+            <!--===================================================-->
+            <!--END NAVBAR-->
+            <div class="boxed">
+                <!--CONTENT CONTAINER-->
+                <!--===================================================-->
+                <div id="content-container">
+                   
+                    <div class="pageheader">
+                        <h3><i class="fa fa-sitemap" aria-hidden="true"></i> Team Tree </h3>
+                        <div class="breadcrumb-wrapper">
+                            <span class="label">You are here:</span>
+                            <ol class="breadcrumb">
+                                <li> <a href="index.html"> Home </a> </li>
+                                <li class="active"> Team Tree </li>
+                            </ol>
+                        </div>
+                    </div>
+                    <!--Page content-->
+                    <!--===================================================-->
+                    <div id="page-content">
+                        <!-- Basic Data Tables -->
+                        <!--===================================================-->
+                        <div class="panel">
+                            <div class="panel-heading">
+                               <h3 class="panel-title">Team Tree</h3>
+                            </div>
+							<!-- <div class="pad-btm mt10 mb10 mr20">
+                                <button class="btn btn-info pull-right">Transfer to Wallet</button>
+                            </div> -->
+                            <div class="panel-body">
+                               <div class="row">
+							   <div class="hv-wrapper">
+							   
+							   
+							   
+							   <div class="col-sm-12">
+							      <div class="tree">
+								    <ul>
+									   <li>
+										    <a href="#" class="tooltip1"> 
+											  <img src="img/user.png">  
+											  <span>
+                                                <div class="flyout">
+                                                   <table width="100%" border="0" cellspacing="1" cellpadding="1">
+													<tbody>
+													<tr>
+													  <td align="left">User ID:</td>
+													  <td align="left">001</td>
+													</tr>
+													<tr>
+													  <td align="left">Full Name:</td>
+													  <td align="left">Thomes</td>
+													</tr>
+												   
+													<tr>
+													  <td align="left">Country:</td>
+													  <td align="left">India</td>
+													</tr>
+
+													<tr>
+													  <td align="left">Sponsor ID:</td>
+													  <td align="left">ABCD123</td>
+													</tr>
+
+													<tr>
+													  <td align="left">Total Users:</td>
+													  <td align="left">L: 1 | R: 0</td>
+													</tr>
+
+													<tr>
+													  <td align="left">Total BV:</td>
+													  <td align="left">L: 70 | R: 0</td>
+													</tr>
+													<tr>
+													  <td align="left">Current BV:</td>
+													  <td align="left">L: 0 | R: 0</td>
+													</tr>
+													
+												  </tbody>
+								                  </table>
+                                                </div>
+                                              </span>
+											</a>
+										  <ul>
+										    <li>
+												<a href="#" class="tooltip1">
+												  <img src="img/user.png">  
+												  <span>
+                                                <div class="flyout">
+                                                   <table width="100%" border="0" cellspacing="1" cellpadding="1">
+													<tbody>
+													<tr>
+													  <td align="left">User ID:</td>
+													  <td align="left">001</td>
+													</tr>
+													<tr>
+													  <td align="left">Full Name:</td>
+													  <td align="left">Thomes</td>
+													</tr>
+												   
+													<tr>
+													  <td align="left">Country:</td>
+													  <td align="left">India</td>
+													</tr>
+
+													<tr>
+													  <td align="left">Sponsor ID:</td>
+													  <td align="left">ABCD123</td>
+													</tr>
+
+													<tr>
+													  <td align="left">Total Users:</td>
+													  <td align="left">L: 1 | R: 0</td>
+													</tr>
+
+													<tr>
+													  <td align="left">Total BV:</td>
+													  <td align="left">L: 70 | R: 0</td>
+													</tr>
+													<tr>
+													  <td align="left">Current BV:</td>
+													  <td align="left">L: 0 | R: 0</td>
+													</tr>
+													
+												  </tbody>
+								                  </table>
+                                                </div>
+                                              </span>
+
+												</a>
+												<ul>
+												 <li>
+													<a href="#"><img src="img/user.png"></a>
+												 </li>
+												 
+												 <li>
+													<a href="#"><img src="img/user.png"></a>
+												 </li>
+												</ul>
+											</li>
+											<li>
+												<a href="#"><img src="img/user.png"></a>
+												
+												<ul>
+												 <li>
+													<a href="#"><img src="img/user.png"></a>
+												 </li>
+												 
+												 <li>
+													<a href="#"><img src="img/user.png"></a>
+												 </li>
+												</ul>
+											</li>
+										  </ul>
+									   </li>
+									</ul>
+								  </div>
+							   </div>
+
+                <!-- Key component -->
+                
+
+            </div>
+							   </div>
+						    <!-- <div class="pad-btm text-center">
+                                <button class="btn btn-info">Export in CSV</button>
+                            </div> -->
+                            </div>
+                        </div>
+                    </div>
+                    <!--===================================================-->
+                    <!--End page content-->
+                </div>
+                <!--===================================================-->
+                <!--END CONTENT CONTAINER-->
+                <!--MAIN NAVIGATION-->
+                <!--===================================================-->
+                <nav id="mainnav-container">
+                    <div id="mainnav">
+                        <!--Menu-->
+                        <!--================================-->
+                        <div id="mainnav-menu-wrap">
+                            <div class="nano">
+                                <div class="nano-content">
+                                    <ul id="mainnav-menu" class="list-group">
+
+                                        <!--Menu list item-->
+                                        <li>
+                                            <a href="../index.html">
+                                            <i class="fa fa-home"></i>
+                                            <span class="menu-title">Home</span>
+                                            </a>
+                                        </li>
+										
+										
+										<!--Menu list item-->
+                                        <li>
+                                            <a href="index.html">
+                                            <i class="fa fa-tachometer" aria-hidden="true"></i>
+                                            <span class="menu-title">Dashboard</span>
+                                            </a>
+                                        </li>
+                                        <!--Menu list item-->
+                                        <li>
+                                            <a href="#">
+                                            <i class="fa fa-user" aria-hidden="true"></i>
+                                            <span class="menu-title">My Account</span>
+                                            <i class="arrow"></i>
+                                            </a>
+                                            <!--Submenu-->
+                                            <ul class="collapse">
+                                                <li><a href="my-profile.html"><i class="fa fa-caret-right"></i> My Profile</a></li>
+                                                <li><a href="edit-profile.html"><i class="fa fa-caret-right"></i> Update Profile </a></li>
+                                                <li><a href="membership.html"><i class="fa fa-caret-right"></i> Upgrade Package</a></li>
+                                            </ul>	
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                            <i class="fa fa-line-chart" aria-hidden="true"></i>
+                                            <span class="menu-title">
+                                            <strong>My Bonus Report</strong>
+                                            </span>
+                                            <i class="arrow"></i>
+                                            </a>
+                                            <!--Submenu-->
+                                            <ul class="collapse">
+                                                <li><a href="sponsor-income.html"><i class="fa fa-caret-right"></i> Sponsor Income </a></li>
+                                                <li><a href="binary-income-report.html"><i class="fa fa-caret-right"></i> Binary Income </a></li>
+                                                <li><a href="binary-point-report.html"><i class="fa fa-caret-right"></i> Binary Point Report </a></li>
+                                                <li><a href="roi-income-report.html"><i class="fa fa-caret-right"></i> ROI Income Report </a></li>
+                                                <li><a href="matching-income-report.html"><i class="fa fa-caret-right"></i> Matching Income Report </a></li>
+                                                <li><a href="entertainment-bonus-report.html"><i class="fa fa-caret-right"></i> Entertainment Income Report </a></li>
+                                            </ul>
+                                        </li>
+                                        <!--Menu list item-->
+                                        <li>
+                                            <a href="#">
+                                            <i class="fa fa-users" aria-hidden="true"></i>
+                                            <span class="menu-title">My Team Report</span>
+                                            <i class="arrow"></i>
+                                            </a>
+                                            <!--Submenu-->
+                                            <ul class="collapse">
+                                                <li><a href="referral-member-report.html"><i class="fa fa-caret-right"></i> Referral Member </a></li>
+                                                <li><a href="team-member-report.html"><i class="fa fa-caret-right"></i> Team Member </a></li>
+                                            </ul>
+                                        </li>
+                                        <!--Menu list item-->
+                                        <li>
+                                            <a href="#">
+                                            <i class="fa fa-address-card-o" aria-hidden="true"></i>
+                                            <span class="menu-title">My Team</span>
+                                            <i class="arrow"></i>
+                                            </a>
+                                            <!--Submenu-->
+                                            <ul class="collapse">
+                                                <li><a href="referral-tree.html"><i class="fa fa-caret-right"></i> Referral Tree </a></li>
+                                                <li><a href="team-tree.html"><i class="fa fa-caret-right"></i> Team Tree </a></li>
+                                            </ul>
+                                        </li>
+                                        <!--Menu list item-->
+                                        <li>
+                                            <a href="#">
+                                            <i class="fa fa-money" aria-hidden="true"></i>
+                                            <span class="menu-title">E-Wallet Section </span>
+                                            <i class="arrow"></i>
+                                            </a>
+                                            <!--Submenu-->
+                                            <ul class="collapse">
+                                                <li><a href="transaction-history.html"><i class="fa fa-caret-right"></i> Transaction History </a></li>
+                                                <li><a href="ewallet-ballance.html"><i class="fa fa-caret-right"></i> Check e-Wallet Balance </a></li>
+                                                <li><a href="e-wallet-fund-transfer.html"><i class="fa fa-caret-right"></i> e-Wallet Fund Transfer </a></li>
+												<li><a href="wallet-to-wallet-point-transfer.html"><i class="fa fa-caret-right"></i> Wallet to Wallet Transfer </a></li>
+												<li><a href="e-wallet-withdrawal.html"><i class="fa fa-caret-right"></i> e-Wallet Withdrawal  </a></li>
+                                            </ul>
+                                        </li>
+                                        <!--Menu list item-->
+                                        <li>
+                                            <a href="#">
+                                            <i class="fa fa-key" aria-hidden="true"></i>
+                                            <span class="menu-title">E Pin/Voucher Section </span>
+                                            <i class="arrow"></i>
+                                            </a>
+                                            <!--Submenu-->
+                                            <ul class="collapse">
+                                                <li><a href="my-fresh-pin-history.html"><i class="fa fa-caret-right"></i> My Fresh Pin History </a></li>
+                                                <li><a href="my-used-pin-history.html"><i class="fa fa-caret-right"></i> My Used Pin History </a></li>
+                                                <li><a href="purchase-pin-from-wallet.html"><i class="fa fa-caret-right"></i> Purchase Pin From Wallet </a></li>
+                                                <li><a href="request-pin-history.html"><i class="fa fa-caret-right"></i> Request Pin History </a></li>
+                                            </ul>
+                                        </li>
+                                        <!--Menu list item-->
+                                        <li>
+                                            <a href="#">
+                                            <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                                            <span class="menu-title">Invoice Section</span>
+                                            <i class="arrow"></i>
+                                            </a>
+                                            <!--Submenu-->
+                                            <ul class="collapse">
+                                                <li><a href="my-invoices.html"><i class="fa fa-caret-right"></i> My Invoices </a></li>
+                                                <li><a href="shopping-invoices.html"><i class="fa fa-caret-right"></i> Shopping Invoices </a></li>
+                                            </ul>
+                                        </li>
+										
+										<!--Menu list item-->
+                                        <li>
+                                            <a href="#">
+                                            <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                                            <span class="menu-title">Messages Panel</span>
+                                            <i class="arrow"></i>
+                                            </a>
+                                            <!--Submenu-->
+                                            <ul class="collapse">
+                                                <li><a href="mail-inbox.html"><i class="fa fa-caret-right"></i> Inbox </a></li>
+                                                <li><a href="mail-compose.html"><i class="fa fa-caret-right"></i> Compose Message </a></li>
+												<li><a href="mail-sentmail.html"><i class="fa fa-caret-right"></i> Sent Message </a></li>
+                                            </ul>
+                                        </li>
+ 
+                                        
+                                        <li>
+                                            <a href="#">
+                                            <i class="fa fa-book" aria-hidden="true"></i>
+                                            <span class="menu-title">Policy Section</span>
+                                            <i class="arrow"></i>
+                                            </a>
+                                            <!--Submenu-->
+                                            <ul class="collapse">
+                                                <li><a href="terms-conditions.html"><i class="fa fa-caret-right"></i> Terms & Conditions </a></li>
+                                                <li><a href="privacy-policy.html"><i class="fa fa-caret-right"></i> Privacy Policy </a></li>
+                                            </ul>
+                                        </li>
+										
+										
+										<li>
+                                            <a href="#">
+                                            <i class="fa fa-chain-broken" aria-hidden="true"></i>
+                                            <span class="menu-title">Topup Section</span>
+                                            <i class="arrow"></i>
+                                            </a>
+                                            <!--Submenu-->
+                                            <ul class="collapse">
+                                                <li><a href="topup-form.html"><i class="fa fa-caret-right"></i> Topup Form </a></li>
+                                                <li><a href="topup-report.html"><i class="fa fa-caret-right"></i> Topup Report </a></li>
+                                            </ul>
+                                        </li>
+										
+                                        
+                                        <!--Menu list item-->
+                                        <li>
+                                            <a href="#">
+                                            <i class="fa fa-chain-broken" aria-hidden="true"></i>
+                                            <span class="menu-title">Bill Payment</span>
+                                            <i class="arrow"></i>
+                                            </a>
+                                            <!--Submenu-->
+                                            <ul class="collapse">
+                                                <li><a href="bill-payment-form.html"><i class="fa fa-caret-right"></i> Pay Bill</a></li>
+                                                <li><a href="bill-payment-report.html"><i class="fa fa-caret-right"></i> Bill Pay Report </a></li>
+                                            </ul>
+                                        </li>
+										
+										
+										 <!--Menu list item-->
+                                        <li>
+                                            <a href="#">
+                                            <i class="fa fa-picture-o" aria-hidden="true"></i>
+                                            <span class="menu-title">Videos/Images</span>
+                                            <i class="arrow"></i>
+                                            </a>
+                                            <!--Submenu-->
+                                            <ul class="collapse">
+                                                <li><a href="power-point-slider.html"><i class="fa fa-caret-right"></i> Power Point Slider</a></li>
+                                                <li><a href="videos-list.html"><i class="fa fa-caret-right"></i>  Videos </a></li>
+												<li><a href="banner.html"><i class="fa fa-caret-right"></i>  Banner </a></li>
+												<li><a href="ebook.html"><i class="fa fa-caret-right"></i>  My eBooks </a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!--================================-->
+                        <!--End menu-->
+                    </div>
+                </nav>
+            </div>
+            <!-- FOOTER -->
+            <!--===================================================-->
+            <footer id="footer">
+                <p class="pad-lft">&#0169; 2016 V6Asia</p>
+            </footer>
+            <!--===================================================-->
+            <!-- END FOOTER -->
+            <!-- SCROLL TOP BUTTON -->
+            <!--===================================================-->
+            <button id="scroll-top" class="btn"><i class="fa fa-chevron-up"></i></button>
+            <!--===================================================-->
+        </div>
+        <!--===================================================-->
+        <!-- END OF CONTAINER -->
+        <!--JAVASCRIPT-->
+        <!--=================================================-->
+        <!--jQuery [ REQUIRED ]-->
+        <script src="js/jquery-2.1.1.min.js"></script>
+        <!--BootstrapJS [ RECOMMENDED ]-->
+        <script src="js/bootstrap.min.js"></script>
+        <!--Fast Click [ OPTIONAL ]-->
+        <script src="plugins/fast-click/fastclick.min.js"></script>
+        <!--Jasmine Admin [ RECOMMENDED ]-->
+        <script src="js/scripts.js"></script>
+        <!--Switchery [ OPTIONAL ]-->
+        <script src="plugins/switchery/switchery.min.js"></script>
+        <!--Bootstrap Select [ OPTIONAL ]-->
+        <script src="plugins/bootstrap-select/bootstrap-select.min.js"></script>
+        <!--DataTables [ OPTIONAL ]-->
+        <script src="plugins/datatables/media/js/jquery.dataTables.js"></script>
+        <script src="plugins/datatables/media/js/dataTables.bootstrap.js"></script>
+        <script src="plugins/datatables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+        <!--Fullscreen jQuery [ OPTIONAL ]-->
+        <script src="plugins/screenfull/screenfull.js"></script>
+        <!--Demo script [ DEMONSTRATION ]-->
+        <script src="js/demo/jasmine.js"></script>
+        <!--DataTables Sample [ SAMPLE ]-->
+        <script src="js/demo/tables-datatables.js"></script>
+		<style>
+		.tree ul {
+	padding-top: 20px; position: relative;
+	padding-left:0px;
+	
+	transition: all 0.5s;
+	-webkit-transition: all 0.5s;
+	-moz-transition: all 0.5s;
+}
+
+.tree li {
+	float: left; text-align: center;
+	list-style-type: none;
+	position: relative;
+	padding: 20px 5px 0 5px;
+	
+	transition: all 0.5s;
+	-webkit-transition: all 0.5s;
+	-moz-transition: all 0.5s;
+}
+
+/*We will use ::before and ::after to draw the connectors*/
+
+.tree li::before, .tree li::after{
+	content: '';
+	position: absolute; top: 0; right: 50%;
+	border-top: 2px solid #428bca;
+	width: 50%; height: 20px;
+}
+.tree li::after{
+	right: auto; left: 50%;
+	border-left: 2px solid #428bca;
+}
+
+/*We need to remove left-right connectors from elements without 
+any siblings*/
+.tree li:only-child::after, .tree li:only-child::before {
+	display: none;
+}
+
+/*Remove space from the top of single children*/
+.tree li:only-child{ padding-top: 0;}
+
+/*Remove left connector from first child and 
+right connector from last child*/
+.tree li:first-child::before, .tree li:last-child::after{
+	border: 0 none;
+}
+/*Adding back the vertical connector to the last nodes*/
+.tree li:last-child::before{
+	border-right: 2px solid #428bca;
+	border-radius: 0 5px 0 0;
+	-webkit-border-radius: 0 5px 0 0;
+	-moz-border-radius: 0 5px 0 0;
+}
+.tree li:first-child::after{
+	border-radius: 5px 0 0 0;
+	-webkit-border-radius: 5px 0 0 0;
+	-moz-border-radius: 5px 0 0 0;
+}
+
+/*Time to add downward connectors from parents*/
+.tree ul ul::before{
+	content: '';
+	position: absolute; top: 0; left: 50%;
+	border-left: 2px solid #428bca;
+	width: 0; height: 20px;
+}
+
+.tree li a{
+	/*border: 2px solid #428bca;*/
+	padding: 5px 20px;
+	text-decoration: none;
+	color: #666;
+	font-family: arial, verdana, tahoma;
+	font-size: 13px;
+	display: inline-block;
+	
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	
+	transition: all 0.5s;
+	-webkit-transition: all 0.5s;
+	-moz-transition: all 0.5s;
+}
+
+/*Time for some hover effects*/
+/*We will apply the hover effect the the lineage of the element also*/
+.tree li a:hover, .tree li a:hover+ul li a {
+	background: #f1f1f1; color: #000; 
+}
+/*Connector styles on hover*/
+.tree li a:hover+ul li::after, 
+.tree li a:hover+ul li::before, 
+.tree li a:hover+ul::before, 
+.tree li a:hover+ul ul::before{
+	border-color:  #94a0b4;
+}
+
+/*Thats all. I hope you enjoyed it.
+Thanks :)*/
+p.details
+{
+  margin: 0px 0px 0px 0px;
+  font-size: 14px;
+  line-height: 22px;
+  font-weight: 600;
+}
+
+/*********************************************************************/
+
+a.tooltip1 span
+{
+    border-radius:4px;
+    box-shadow: 5px 5px 8px #CCC;
+	position:absolute;
+	z-index:9999;
+}
+
+
+a.tooltip1 {
+    outline: medium none;
+}
+a.tooltip1 strong {
+    line-height: 30px;
+}
+a.tooltip1:hover {
+    text-decoration: none;
+}
+a.tooltip1 span {
+    display: none;
+    line-height: 18px;
+    margin-top: -20px;
+    padding: 5px;
+	position:relative;
+    z-index: 99999;
+}
+a.tooltip1:hover span {
+    background: #FFF;
+    border:1px solid #25A79F;
+    color: #111;
+    display: inline;
+    position: absolute;
+}
+.callout {
+    border: 0 none;
+    bottom: -10px;
+    left: 15px;
+    position: absolute;
+    z-index: 20;
+	display:none;
+}
+a.tooltip1 span {
+    border-radius: 4px;
+    box-shadow: 5px 5px 8px #ccc;
+	position:relative;
+	z-index:99999;
+	min-width: 190px;
+    margin-left: 60px;
+    top: 10px;
+}
+
+		</style>
+		
+		<script>
+		 $(function () {
+  $('[data-toggle="popover"]').popover()
+})
+		</script>
+    </body>
+</html>

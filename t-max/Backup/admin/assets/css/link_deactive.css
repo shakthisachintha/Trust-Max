@@ -1,0 +1,4 @@
+#sample-table-2 tr td div a{
+   pointer-events: none;
+   cursor: default;
+}
