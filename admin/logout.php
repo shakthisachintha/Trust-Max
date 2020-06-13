@@ -1,11 +1,12 @@
 <?PHP
-//session_save_path('/home/binamlm/tmp');
+//session_save_path('/home/quickclass/tmp');
 //ini_set('session.gc_probability', 1);
-include "admin/AMframe/config.php";
+include("AMframe/config.php");
+ob_start();
+session_start();
 session_destroy();
-unset($_SESSION['userid']);
-unset($_SESSION['profileid']);
-unset($_SESSION['user_fname']);
-header('location: login.php');
-echo "<script>window.location='login.php';</script>";
+
+unset($_SESSION['admin_id']);
+
+header('location: index.php');
 ?> 

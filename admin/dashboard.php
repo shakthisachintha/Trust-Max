@@ -1,221 +1,609 @@
 <?php 
-include("admin/AMframe/config.php");
-include("includes/function.php");
-include("includes/head.php");
-
-if(!(isset($_SESSION['profileid'])) && !(isset($_SESSION['userid']))) {
-	header("location:index.php");
-	echo "<script>window.location='index.php'</script>";
-}
-
-$pay_sum_s = $db->extract_single("SELECT SUM(pay_amount) as stot from mlm_payoutcalc where pay_user='$_SESSION[userid]' AND pay_calc_status = 1");
-if($pay_sum_s == NULL || $pay_sum_s == ''){$pay_sum_s = 0;}
-
-$pay_sum_f = $db->extract_single("SELECT SUM(pay_amount) as tot from mlm_payoutcalc where pay_user='$_SESSION[userid]' AND pay_calc_status = 0");
-if($pay_sum_f == NULL || $pay_sum_f == ''){$pay_sum_f = 0;}
-
-$pur_num_s=$db->numrows("select * from mlm_purchase where pay_user='$_SESSION[userid]' AND pay_payment = 1");
-				
-$puram_sum_s=$db->extract_single("select sum(pay_amount) as tot from mlm_purchase where pay_user='$_SESSION[userid]' AND pay_payment = 1");
-
-$pur_num_p=$db->numrows("select * from mlm_purchase where pay_user='$_SESSION[userid]' AND pay_payment = 0");
-				
-$puram_sum_p=$db->extract_single("select sum(pay_amount) as sum from mlm_purchase where pay_user='$_SESSION[userid]' AND pay_payment = 0");
-
-$pur_num_f=$db->numrows("select * from mlm_purchase where pay_user='$_SESSION[userid]' AND pay_payment = 2");
-				
-$puram_sum_f=$db->extract_single("select sum(pay_amount) as sum from mlm_purchase where pay_user='$_SESSION[userid]' AND pay_payment = 2");
-
-if($pur_num_s == NULL || $pur_num_s == ''){$pur_num_s=0;}
-if($pur_num_p == NULL || $pur_num_p == ''){$pur_num_p=0;}
-if($pur_num_f == NULL || $pur_num_f == ''){$pur_num_f=0;}
-
-if($puram_sum_s == NULL || $puram_sum_s == ''){$puram_sum_s=0;}
-if($puram_sum_p == NULL || $puram_sum_p == ''){$puram_sum_p=0;}
-if($puram_sum_f == NULL || $puram_sum_f == ''){$puram_sum_f=0;}
-
-$d4 = date('Y-m-d', strtotime(date('Y-m-d')." -4 week")); 
-$d3 = date('Y-m-d', strtotime(date('Y-m-d')." -3 week")); 
-$d2 = date('Y-m-d', strtotime(date('Y-m-d')." -2 week")); 
-$d1 = date('Y-m-d', strtotime(date('Y-m-d')." -1 week")); 
-$d0 = date('Y-m-d', strtotime(date('Y-m-d')));
-
-$psum_d4 = array();
-$psum_d3 = array();
-$psum_d2 = array();
-$psum_d1 = array();
-
-for($i=0;$i<3;$i++)
+include("AMframe/config.php"); 
+include("includes/header.php"); 
+if((!isset($_SESSION['admin_id'])) && ($_SESSION[ 'admin_id']=="" ))
 {
-$row1 = $db->extract_single("select sum(pay_amount) as sum from mlm_purchase where pay_user='$_SESSION[userid]' AND (pay_date BETWEEN '$d4' and '$d3') AND pay_payment=$i");
-$psum_d4[$i] = $row1;
-if($psum_d4[$i] == NULL || $psum_d4[$i] == ""){$psum_d4[$i] = 0;}	
+	header("location:index.php");
+} 
+$menu1='class="active"' ; 
+?>
 
 
-$row2 = $db->extract_single("select sum(pay_amount) as sum from mlm_purchase where pay_user='$_SESSION[userid]' AND (pay_date BETWEEN '$d3' and '$d2') AND pay_payment=$i");
-$psum_d3[$i] = $row2;
-if($psum_d3[$i] == NULL || $psum_d3[$i] == ""){$psum_d3[$i] = 0;}
+<div class="main-container container-fluid">
+    <a class="menu-toggler" id="menu-toggler" href="#">
+        <span class="menu-text"></span>
+    </a>
+    <?php include( "includes/sidebar.php"); ?>
 
-$row3 = $db->extract_single("select sum(pay_amount) as sum from mlm_purchase where pay_user='$_SESSION[userid]' AND (pay_date BETWEEN '$d2' and '$d1') AND pay_payment=$i");
-$psum_d2[$i] = $row3;
-if($psum_d2[$i] == NULL || $psum_d2[$i] == ""){$psum_d2[$i] = 0;}
+    <div class="main-content">
+        <div class="breadcrumbs" id="breadcrumbs">
+            <ul class="breadcrumb">
+                <li>
+                    <i class="icon-home home-icon"></i>
+                    <a href="#">Home</a>
 
-$row4 = $db->extract_single("select sum(pay_amount) as sum from mlm_purchase where pay_user='$_SESSION[userid]' AND (pay_date BETWEEN '$d1' and '$d0') AND pay_payment=$i");
-$psum_d1[$i] = $row4;
-if($psum_d1[$i] == NULL || $psum_d1[$i] == ""){$psum_d1[$i] = 0;}
+                    <span class="divider">
+								<i class="icon-angle-right arrow-icon"></i>
+							</span>
+                </li>
+                <li class="active">Dashboard</li>
+            </ul>
+        </div>
 
+        <div class="page-content">
+            <div class="page-header position-relative">
+                <h1>
+							Dashboard
+							<small>
+								<i class="icon-double-angle-right"></i>
+								overview &amp; stats
+							</small>
+						</h1>
+            </div>
+            <!--/.page-header-->
+
+            <div class="row-fluid">
+                <div class="span12">
+                    <!--PAGE CONTENT BEGINS-->
+
+                    <div class="alert alert-block alert-success">
+                        <button type="button" class="close" data-dismiss="alert">
+                            <i class="icon-remove"></i>
+                        </button>
+
+                        <i class="icon-ok green"></i> Welcome to
+                        <strong class="green">
+									administrator
+									<small></small>
+								</strong>
+                    </div>
+
+<?php 
+// users
+$numusers=$db->numrows("select user_fname from mlm_register where user_status != 5"); 
+// products
+$numproducts=$db->numrows("select pro_name from mlm_products"); 
+// stocks
+$numstocks=$db->numrows( "select stock_id from mlm_stocks");   
+// trans request
+$numtrans_requests=$db->numrows("select * from mlm_withdrawrequsets"); 
+//TDS value
+$trans=$db->singlerec("select SUM(req_cvamount*(tds_percent/100)) as tds_price from mlm_withdrawrequsets");
+// trans cancel
+$numtrans_cancel=$db->numrows("select * from mlm_withdrawrequsets where req_status=1"); 
+// news
+$numnews=$db->numrows("select * from mlm_news where news_status = 0"); 
+// product sale
+$numsales=$db->numrows("select pay_id from mlm_purchase where pay_payment=1");
+
+$salesamount_sum=$db->extract_single("select SUM(pay_amount) as sum from mlm_purchase where pay_payment=1");
+$pstock_sum=$db->extract_single("select SUM(stock_count) as sum from mlm_stocks where stock_status=0");				
+$pstock_sum_a=$db->extract_single("select sum(mlm_stocks.stock_count * mlm_products.pro_cost) as sum from mlm_stocks,mlm_products where mlm_stocks.stock_proid = mlm_products.pro_id");
+
+// product wastage
+$pw_waste_sum=$db->extract_single("select SUM(waste_count) as sum from mlm_wastage where waste_status=0");
+$pw_waste_sum_a=$db->extract_single("select sum(mlm_wastage.waste_count * mlm_products.pro_cost) as sum from mlm_wastage,mlm_products where mlm_wastage.waste_proid = mlm_products.pro_id");
+
+// inbox
+$newmail=$db->numrows("select * from mlm_outbox where outbox_toprofileid='Admin'");
+// read mail
+$readmail=$db->numrows("select * from mlm_outbox where (outbox_toprofileid='Admin' and outbox_status='0') and (outbox_fromstatus='0' and outbox_readstatus='1')");
+// testimonial
+$testimonial_num=$db->numrows("select * from mlm_testimonial where test_status = 0");
+// country
+$country_num=$db->numrows("select * from mlm_country where country_status = 0");
+// ads
+$ads_num=$db->numrows("select * from mlm_advertise where ad_status = 1");
+// Commission
+$commfetch=$db->singlerec("select * from mlm_basic_comission");
+
+// DRL Income
+$drlIncome=$db->get_all("select status from mlm_drl");
+$drlAp = 0;
+$drlPe = 0;
+$drlRe = 0;
+foreach($drlIncome as $d){
+    if($d['status'] == 0){
+        $drlPe += 1;
+    }
+    if($d['status'] == 1){
+        $drlAp += 1;
+    }
+    if($d['status'] == 2){
+        $drlRe += 1;
+    }
 }
 
-$psum_d4[3] = $psum_d4[2] + $psum_d4[1] + $psum_d4[0];
-$psum_d3[3] = $psum_d3[2] + $psum_d3[1] + $psum_d3[0];
-$psum_d2[3] = $psum_d2[2] + $psum_d2[1] + $psum_d2[0];
-$psum_d1[3] = $psum_d1[2] + $psum_d1[1] + $psum_d1[0];
+if(isset($_REQUEST['submitTransaction']))
+{    
+    if(isset($_REQUEST['sponsor']) && !empty($_REQUEST['sponsor']) && 
+        isset($_REQUEST['amount']) && !empty($_REQUEST['amount']) && 
+        isset($_REQUEST['drCr']) && !empty($_REQUEST['drCr'])
+    ){
+        $sponsor = $_REQUEST['sponsor'];
+        $amount = $_REQUEST['amount'];
+        $drCr = $_REQUEST['drCr'];
+        $message = $_REQUEST['message'];
+
+        $date = date("Y-m-d");
+
+        $set = "user_id = '$sponsor'";
+        $set .= ", amount= '$amount'";
+        $set .= ", drCr= '$drCr'";
+        $set .= ", message= '$message'";
+        $set .= ", submitted_at= '$date'";
+        $insertrec=$db->insertrec("insert into mlm_transaction set $set");
+		header("location:dashboard.php?tnSs");
+    }
+	
+}
+if(isset($_REQUEST['submitDrl']))
+{    
+    if(isset($_REQUEST['ammount']) && !empty($_REQUEST['ammount']) && isset($_REQUEST['month']) && !empty($_REQUEST['month']) && isset($_REQUEST['id']) && !empty($_REQUEST['id'])){
+        $id = $_REQUEST['id'];
+        $amount = $_REQUEST['ammount'];
+        $month = $_REQUEST['month'];
+        $sponsor = $db->singlerec("select user_sponserid from mlm_register where user_profileid='$id'");
+
+        $date = date("Y-m-d");
+        $sponsor = $sponsor['user_sponserid'];
+
+        $set = "sponsor_id = '$sponsor'";
+        $set .= ", user_id= '$id'";
+        $set .= ", amount= '$amount'";
+        $set .= ", date= '$month'";
+        $set .= ", submitted_at= '$date'";
+        $insertrec=$db->insertrec("insert into mlm_drl set $set");
+		header("location:dashboard.php");
+    }
+	
+}
 
 ?>
-<link href="css/pagination.css" rel="stylesheet" type="text/css" />
-<link href="css/B_red.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+h2 {
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 13pt;
+	color: navy;
+	padding-top: 12px;
+	padding-bottom: 3px;
+	margin: 5px;
+}
+table tr td {
+	padding: 7px;
+}
+</style>
 
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-<link href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />
-</head>
-    <body>
-	<div class="container main">
-		<!-- Start Header-->
-		<?php include("includes/header.php");?>
-		<!-- End Header-->
-		<hr />
-		
-		<!-- Profile info -->
-		<?php include("includes/profileheader.php");?>
-		
-		<div class="row" style="margin-top:30px;">
-		
-		<!-- left div here -->
-			
-		<?php include("includes/profilemenu.php");?>
-			
-		<div class="col-sm-9">
-			<div class="row">
-				<div class="col-sm-12">
-					<div class="banner">
-					<button data-toggle="collapse" data-target="#demo" class="btn btn-info">Your Downline List</button>
-					<br><br>	
+		<table  width="100%" align="center" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+                <td width="33%" valign="top">
+                    <button data-toggle="collapse" data-target="#demo" class="btn btn-info">Admin Transaction</button>
                     <div id="demo" class="collapse">
-						<div class="table-responsive">
-								<table id="example1" class="table table-striped table-bordered" cellspacing="0" width="100%">
-								<thead>
-								<tr>
-									<td width="10%">
-										<strong>S.No</strong>
-									</td>
-									
-									<td width="25%"> 
-										<strong>Name</strong>
-									</td>
-									
-									<td width="25%">
-										<strong>Email</strong>
-									</td>
-									
-									<td width="25%">
-										<strong>Phone</strong>
-									</td>
-									
-									<td width="35%">
-										<strong>Join Date</strong>
-									</td>
-									
-								</tr>
-								</thead>
-								
-								
-								<?php
-								$sql="SELECT * from mlm_register where user_sponserid='$_SESSION[profileid]' and user_status='0'";
-								$result = $db->get_all_assoc($sql);
-								$count=$db->numrows($sql);
-								if($count!=0){
-								$i=0;
-								
-								foreach($result as $row){
-								$name = $row['user_fname'];
-								$email = $row['user_email'];
-								$phone = $row['user_phone'];
-								$date = $row['user_date'];
-								$i++;
-																
-										?>
-								<tr><?php echo isset($Message) ? $Message:'';?>
-									<td>
-										<?php echo $i;?>
-									</td>
-									
-									<td> 
-										<?php echo $name;?>
-									</td>
-									
-									<td>
-										<?php echo $email;?>
-									</td>
-									
-									<td>
-										<?php echo $phone;?>
-									</td>
-									
-									<td>
-										<?php echo $date;?>
-									</td>
-									
-								</tr>	
-									
-							<?php } } else { echo "<td colspan='4' style='text-align:center;color: #f00;font-size: 14px;padding-top: 20px;'>No Records Found</td>"; } ?>
-
-								</table>
-						</div>
+                        <form action="" method="post">
+                            <br>
+                            <input type="text" name="sponsor" class="form-control" placeholder="Sponsor ID">
+                            <input type="number" name="amount" class="form-control" placeholder="Amount">
+                            <select name="drCr" id="">
+                                <option value="1">Debit</option>
+                                <option value="0">Credit</option>
+                            </select>
+                            <input type="text" name="message" placeholder="message">
+                            <br>
+                            <input type="submit" value="submit" name="submitTransaction">
+                        </form>
                     </div>
-			</div>
+                </td>
+                <td width="33%" valign="top">
+                    <button data-toggle="collapse" data-target="#savingUpgrade" class="btn btn-info">Saving Upgrade</button>
+                    <div id="savingUpgrade" class="collapse">
+                        <form action="" method="post">
+                            <br>
+                            <div class="form-group">
+                                <label><b>User ID: <span class="required">*</span></b> </label>
+                                <div class="input-group">
+                                    <input class="form-control" type="text" name="id" required="true" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label><b>Ammount: <span class="required">*</span></b> </label>
+                                <div class="input-group">
+                                    <input class="form-control" type="number" name="ammount" required="true"  value="2020-05" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label><b>For Month: <span class="required">*</span></b> </label>
+                                <div class="input-group">
+                                    <input class="form-control" type="month" name="month" required="true" />
+                                </div>
+                            </div>
+                            <input type="submit" value="submit" name="submitDrl">
+                        </form>
+                    </div>
+                </td>
+                <td width="33%" valign="top">
+                        
+                </td>
+						
+			</tr>
+			<tr>								                    
+				<td width="33%" valign="top">
+                        <br>
+                        <table width="100%" cellpadding="0" cellspacing="0" border="1" >
+							<tr style="background-color:#438EB9;color:#fff;font-weight:700;">
+								<td colspan="2" align="center">DRL Requests <span class="badge"><?php echo count($drlIncome); ?></span></td>
+							</tr>
+							<tr>
+								<td width="50%"><a href="drlRequest.php?p">Pening Request</a></td>
+								<td width="50%">
+                                    <span class="badge"><?php echo $drlPe; ?></span>
+								</td>
+							</tr>
+							<tr>
+								<td width="50%"><a href="drlRequest.php?a">Approved Request's</a></td>
+								<td width="50%">
+                                    <span class="badge"><?php echo $drlAp; ?></span>
+								</td>
+							</tr>
+							<tr>
+								<td width="50%"><a href="drlRequest.php?r">Rejected Request</a></td>
+								<td width="50%">
+                                    <span class="badge"><?php echo $drlRe; ?></span>
+								</td>
+							</tr>
+						</table>
+				</td>
+				<td width="33%" valign="top">
+					
+				</td>
+				<td width="33%" valign="top">
+							
+				</td>
+			</tr>
+		</table>
+                    <!--/row-->
+                    <!--/row-->
+                    <!--PAGE CONTENT ENDS-->
+                </div>
+                <!--/.span-->
+            </div>
+            <!--/.row-fluid-->
+        </div>
+        <!--/.page-content-->
+        <div class="ace-settings-container" id="ace-settings-container">
+            <div class="btn btn-app btn-mini btn-warning ace-settings-btn" id="ace-settings-btn">
+                <i class="icon-cog bigger-150"></i>
+            </div>
 
-		   <br/>
-		</div>	
-</div>				
-	
-	
-<?php include "includes/login-access-ads.php";?>
-</div>			
+            <div class="ace-settings-box" id="ace-settings-box">
+                <div>
+                    <div class="pull-left">
+                        <select id="skin-colorpicker" class="hide">
+                            <option data-class="default" value="#438EB9" />#438EB9
+                            <option data-class="skin-1" value="#222A2D" />#222A2D
+                            <option data-class="skin-2" value="#C6487E" />#C6487E
+                            <option data-class="skin-3" value="#D0D0D0" />#D0D0D0
+                        </select>
+                    </div>
+                    <span>&nbsp; Choose Skin</span>
+                </div>
+
+                <div>
+                    <input type="checkbox" class="ace-checkbox-2" id="ace-settings-header" />
+                    <label class="lbl" for="ace-settings-header"> Fixed Header</label>
+                </div>
+
+                <div>
+                    <input type="checkbox" class="ace-checkbox-2" id="ace-settings-sidebar" />
+                    <label class="lbl" for="ace-settings-sidebar"> Fixed Sidebar</label>
+                </div>
+
+                <div>
+                    <input type="checkbox" class="ace-checkbox-2" id="ace-settings-breadcrumbs" />
+                    <label class="lbl" for="ace-settings-breadcrumbs"> Fixed Breadcrumbs</label>
+                </div>
+
+                <div>
+                    <input type="checkbox" class="ace-checkbox-2" id="ace-settings-rtl" />
+                    <label class="lbl" for="ace-settings-rtl"> Right To Left (rtl)</label>
+                </div>
+            </div>
+        </div>
+        <!--/#ace-settings-container-->
+    </div>
+    <!--/.main-content-->
 </div>
+<!--/.main-container-->
 
+<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-small btn-inverse">
+    <i class="icon-double-angle-up icon-only bigger-110"></i>
+</a>
 
-<?php include("includes/footer.php"); ?>
-</div>
-		
-<script src="js/jquery.js"></script>
-<script src="js/bootstrap.js"></script>
-		
-<link href="c3/c3.css" rel="stylesheet" type="text/css">
-<script src="d3/d3.v3.min.js"></script>
-<script src="c3/c3.min.js"></script>		
-	
-<script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-	
-<script>
-$(document).ready(function() {
-    $('#example').DataTable();
-});
+<!--basic scripts-->
 
-$(document).ready(function() {
-    $('#example1').DataTable();
-});
+<!--[if !IE]>-->
 
-</script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+<!--<![endif]-->
+
+<!--[if IE]>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<![endif]-->
+
+<!--[if !IE]>-->
+
 <script type="text/javascript">
-$(document).ready(function() {
-    $('#example2').DataTable();
-});
-
-
-$(document).ready(function() {
-    $('#example3').DataTable();
-});
+    window.jQuery || document.write("<script src='assets/js/jquery-2.0.3.min.js'>" + "<" + "/script>");
 </script>
-	</body>
+
+<!--<![endif]-->
+
+<!--[if IE]>
+<script type="text/javascript">
+ window.jQuery || document.write("<script src='assets/js/jquery-1.10.2.min.js'>"+"<"+"/script>");
+</script>
+<![endif]-->
+
+<script type="text/javascript">
+    if ("ontouchend" in document) document.write("<script src='assets/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");
+</script>
+<script src="assets/js/bootstrap.min.js"></script>
+
+<!--page specific plugin scripts-->
+
+<!--[if lte IE 8]>
+		  <script src="assets/js/excanvas.min.js"></script>
+		<![endif]-->
+
+<script src="assets/js/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="assets/js/jquery.ui.touch-punch.min.js"></script>
+<script src="assets/js/jquery.slimscroll.min.js"></script>
+<script src="assets/js/jquery.easy-pie-chart.min.js"></script>
+<script src="assets/js/jquery.sparkline.min.js"></script>
+<script src="assets/js/flot/jquery.flot.min.js"></script>
+<script src="assets/js/flot/jquery.flot.pie.min.js"></script>
+<script src="assets/js/flot/jquery.flot.resize.min.js"></script>
+
+<!--ace scripts-->
+
+<script src="assets/js/ace-elements.min.js"></script>
+<script src="assets/js/ace.min.js"></script>
+
+<!--inline scripts related to this page-->
+
+<script type="text/javascript">
+    $(function() {
+        $('.easy-pie-chart.percentage').each(function() {
+            var $box = $(this).closest('.infobox');
+            var barColor = $(this).data('color') || (!$box.hasClass('infobox-dark') ? $box.css('color') : 'rgba(255,255,255,0.95)');
+            var trackColor = barColor == 'rgba(255,255,255,0.95)' ? 'rgba(255,255,255,0.25)' : '#E2E2E2';
+            var size = parseInt($(this).data('size')) || 50;
+            $(this).easyPieChart({
+                barColor: barColor,
+                trackColor: trackColor,
+                scaleColor: false,
+                lineCap: 'butt',
+                lineWidth: parseInt(size / 10),
+                animate: /msie\s*(8|7|6)/.test(navigator.userAgent.toLowerCase()) ? false : 1000,
+                size: size
+            });
+        })
+
+        $('.sparkline').each(function() {
+            var $box = $(this).closest('.infobox');
+            var barColor = !$box.hasClass('infobox-dark') ? $box.css('color') : '#FFF';
+            $(this).sparkline('html', {
+                tagValuesAttribute: 'data-values',
+                type: 'bar',
+                barColor: barColor,
+                chartRangeMin: $(this).data('min') || 0
+            });
+        });
+
+
+
+
+        var placeholder = $('#piechart-placeholder').css({
+            'width': '90%',
+            'min-height': '150px'
+        });
+        var data = [{
+            label: "social networks",
+            data: 38.7,
+            color: "#68BC31"
+        }, {
+            label: "search engines",
+            data: 24.5,
+            color: "#2091CF"
+        }, {
+            label: "ad campaings",
+            data: 8.2,
+            color: "#AF4E96"
+        }, {
+            label: "direct traffic",
+            data: 18.6,
+            color: "#DA5430"
+        }, {
+            label: "other",
+            data: 10,
+            color: "#FEE074"
+        }]
+
+        function drawPieChart(placeholder, data, position) {
+            $.plot(placeholder, data, {
+                series: {
+                    pie: {
+                        show: true,
+                        tilt: 0.8,
+                        highlight: {
+                            opacity: 0.25
+                        },
+                        stroke: {
+                            color: '#fff',
+                            width: 2
+                        },
+                        startAngle: 2
+                    }
+                },
+                legend: {
+                    show: true,
+                    position: position || "ne",
+                    labelBoxBorderColor: null,
+                    margin: [-30, 15]
+                },
+                grid: {
+                    hoverable: true,
+                    clickable: true
+                }
+            })
+        }
+        drawPieChart(placeholder, data);
+
+        /**
+			 we saved the drawing function and the data to redraw with different position later when switching to RTL mode dynamically
+			 so that's not needed actually.
+			 */
+        placeholder.data('chart', data);
+        placeholder.data('draw', drawPieChart);
+
+
+
+        var $tooltip = $("<div class='tooltip top in hide'><div class='tooltip-inner'></div></div>").appendTo('body');
+        var previousPoint = null;
+
+        placeholder.on('plothover', function(event, pos, item) {
+            if (item) {
+                if (previousPoint != item.seriesIndex) {
+                    previousPoint = item.seriesIndex;
+                    var tip = item.series['label'] + " : " + item.series['percent'] + '%';
+                    $tooltip.show().children(0).text(tip);
+                }
+                $tooltip.css({
+                    top: pos.pageY + 10,
+                    left: pos.pageX + 10
+                });
+            } else {
+                $tooltip.hide();
+                previousPoint = null;
+            }
+
+        });
+
+
+
+
+        var d1 = [];
+        for (var i = 0; i < Math.PI * 2; i += 0.5) {
+            d1.push([i, Math.sin(i)]);
+        }
+
+        var d2 = [];
+        for (var i = 0; i < Math.PI * 2; i += 0.5) {
+            d2.push([i, Math.cos(i)]);
+        }
+
+        var d3 = [];
+        for (var i = 0; i < Math.PI * 2; i += 0.2) {
+            d3.push([i, Math.tan(i)]);
+        }
+
+
+        var sales_charts = $('#sales-charts').css({
+            'width': '100%',
+            'height': '220px'
+        });
+        $.plot("#sales-charts", [{
+            label: "Domains",
+            data: d1
+        }, {
+            label: "Hosting",
+            data: d2
+        }, {
+            label: "Services",
+            data: d3
+        }], {
+            hoverable: true,
+            shadowSize: 0,
+            series: {
+                lines: {
+                    show: true
+                },
+                points: {
+                    show: true
+                }
+            },
+            xaxis: {
+                tickLength: 0
+            },
+            yaxis: {
+                ticks: 10,
+                min: -2,
+                max: 2,
+                tickDecimals: 3
+            },
+            grid: {
+                backgroundColor: {
+                    colors: ["#fff", "#fff"]
+                },
+                borderWidth: 1,
+                borderColor: '#555'
+            }
+        });
+
+
+        $('#recent-box [data-rel="tooltip"]').tooltip({
+            placement: tooltip_placement
+        });
+
+        function tooltip_placement(context, source) {
+            var $source = $(source);
+            var $parent = $source.closest('.tab-content')
+            var off1 = $parent.offset();
+            var w1 = $parent.width();
+
+            var off2 = $source.offset();
+            var w2 = $source.width();
+
+            if (parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2)) return 'right';
+            return 'left';
+        }
+
+
+        $('.dialogs,.comments').slimScroll({
+            height: '300px'
+        });
+
+
+        //Android's default browser somehow is confused when tapping on label which will lead to dragging the task
+        //so disable dragging when clicking on label
+        var agent = navigator.userAgent.toLowerCase();
+        if ("ontouchstart" in document && /applewebkit/.test(agent) && /android/.test(agent))
+            $('#tasks').on('touchstart', function(e) {
+                var li = $(e.target).closest('#tasks li');
+                if (li.length == 0) return;
+                var label = li.find('label.inline').get(0);
+                if (label == e.target || $.contains(label, e.target)) e.stopImmediatePropagation();
+            });
+
+        $('#tasks').sortable({
+            opacity: 0.8,
+            revert: true,
+            forceHelperSize: true,
+            placeholder: 'draggable-placeholder',
+            forcePlaceholderSize: true,
+            tolerance: 'pointer',
+            stop: function(event, ui) { //just for Chrome!!!! so that dropdowns on items don't appear below other items after being moved
+                $(ui.item).css('z-index', 'auto');
+            }
+        });
+        $('#tasks').disableSelection();
+        $('#tasks input:checkbox').removeAttr('checked').on('click', function() {
+            if (this.checked) $(this).closest('li').addClass('selected');
+            else $(this).closest('li').removeClass('selected');
+        });
+
+
+    })
+</script>
+</body>
 </html>

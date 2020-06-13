@@ -1,311 +1,537 @@
-<?php 
-include("admin/AMframe/config.php");
-include("includes/function.php");
-if(!(isset($_SESSION['profileid'])) && !(isset($_SESSION['userid'])))
+<?php
+include("AMframe/config.php");
+include("includes/header.php");
+   
+if((!isset($_SESSION['admin_id'])) && ($_SESSION['admin_id']==""))
 {
 header("location:index.php");
+}
+$menu14='class="active"';
 
-echo "<script>window.location='index.php'</script>";
+if(isset($_REQUEST['setpay']))
+{
+
+$id=addslashes($_REQUEST['setpay']);
+
+$act=$db->insertrec("update mlm_payout set status='1' where id='$id'");
+
+if($act)
+{
+?>
+<script>
+window.location="level-payout.php?paysucc";
+</script>
+<?php
+}
 
 }
 
-include("includes/head.php");
+if(isset($_REQUEST['unsetpay']))
+{
 
-$pay_sum_s = $db->extract_single("SELECT SUM(pay_amount) as sum from mlm_payoutcalc where pay_user='$_SESSION[userid]' AND pay_calc_status = 1");
+$id=addslashes($_REQUEST['unsetpay']);
 
-if($pay_sum_s == NULL || $pay_sum_s == ''){$pay_sum_s = 0;}
+$act=$db->insertrec("update mlm_payout set status='0' where id='$id'");
 
-$pay_sum_f = $db->extract_single("SELECT SUM(pay_amount) as sum from mlm_payoutcalc where pay_user='$_SESSION[userid]' AND pay_calc_status = 0");
+if($act)
+{
+?>
+<script>
+window.location="level-payout.php?payrev";
+</script>
+<?php
+}
 
-if($pay_sum_f == NULL || $pay_sum_f == ''){$pay_sum_f = 0;}
+}
 
-$pur_num_s=$db->numrows("select * from mlm_purchase where pay_user='$_SESSION[userid]' AND pay_payment = 1");
-				
-$puram_sum_s=$db->extract_single("select sum(pay_amount) as sum from mlm_purchase where pay_user='$_SESSION[userid]' AND pay_payment = 1");
+if(isset($_REQUEST['delete']))
+{
 
-$pur_num_p=$db->numrows("select * from mlm_purchase where pay_user='$_SESSION[userid]' AND pay_payment = 0");
-				
-$puram_sum_p=$db->extract_single("select sum(pay_amount) as sum from mlm_purchase where pay_user='$_SESSION[userid]' AND pay_payment = 0");
+$id=addslashes($_REQUEST['delete']);
 
-$pur_num_f=$db->numrows("select * from mlm_purchase where pay_user='$_SESSION[userid]' AND pay_payment = 2");
-				
-$puram_sum_f=$db->extract_single("select sum(pay_amount) as sum from mlm_purchase where pay_user='$_SESSION[userid]' AND pay_payment = 2");
+$det=$db->insertrec("delete from mlm_payout where id='$id'");
 
-if($pur_num_s == NULL || $pur_num_s == ''){$pur_num_s=0;}
-if($pur_num_p == NULL || $pur_num_p == ''){$pur_num_p=0;}
-if($pur_num_f == NULL || $pur_num_f == ''){$pur_num_f=0;}
+if($det)
+{
+?>
+<script>
+window.location="level-payout.php?del";
+</script>
 
-if($puram_sum_s == NULL || $puram_sum_s == ''){$puram_sum_s=0;}
-if($puram_sum_p == NULL || $puram_sum_p == ''){$puram_sum_p=0;}
-if($puram_sum_f == NULL || $puram_sum_f == ''){$puram_sum_f=0;}
+<?php
+}
+
+}
+
+if(isset($_POST['mul_delete']))
+{
+    $checkbox = $_POST['chkval'];
+
+for($i=0;$i<count($checkbox);$i++){
+
+$del_id = $checkbox[$i];
+
+$sql = "delete from mlm_payout where id='$del_id'";
+$result = $db->insertrec($sql);
+}
+
+if($result){?> <script>
+window.location="level-payout.php?del";
+</script> <?php
+}
+ }
+
+if(isset($_POST['mul_active']))
+{
+$checkbox = $_POST['chkval'];
+
+for($i=0;$i<count($checkbox);$i++){
+
+$act_id = $checkbox[$i];
+
+$sql = "update mlm_payout set status='1' where id='$act_id'";
+$result = $db->insertrec($sql);
+}
+
+if($result){?> <script>
+window.location="level-payout.php?paysucc";
+</script> <?php
+}
+ }
 
 
-	$d4 = date('Y-m-d', strtotime(date('Y-m-d')." -4 week")); 
-	$d3 = date('Y-m-d', strtotime(date('Y-m-d')." -3 week")); 
-	$d2 = date('Y-m-d', strtotime(date('Y-m-d')." -2 week")); 
-	$d1 = date('Y-m-d', strtotime(date('Y-m-d')." -1 week")); 
-	$d0 = date('Y-m-d', strtotime(date('Y-m-d')));
-	
-	$psum_d4 = array();
-	$psum_d3 = array();
-	$psum_d2 = array();
-	$psum_d1 = array();
-	
-	for($i=0;$i<3;$i++)
+if(isset($_POST['mul_inactive']))
+{
+    $checkbox = $_POST['chkval'];
+
+for($i=0;$i<count($checkbox);$i++){
+
+$inact_id = $checkbox[$i];
+
+
+$sql = "update mlm_payout set status='0' where id='$inact_id'";
+$result = $db->insertrec($sql);
+}
+
+if($result){?> <script>
+window.location="payout.php?payrev";
+</script> <?php
+}
+}
+
+$date = date('Y-m-d',time()-(90*86400)); // 3 months ago
+$sdate = date('Y-m-d',time()-(180*86400)); // 6 months ago
+$ydate = date('Y-m-d',time()-(365*86400)); // 1 year ago
+?>
+<script>
+   function muldel()
+   {
+   var chks = document.getElementsByName('chkval[]');
+      var hasChecked = false;
+      for (var i = 0; i < chks.length; i++) {
+          if (chks[i].checked) {
+              hasChecked = true;
+              break;
+          }
+      }
+      if (hasChecked == false) {
+          alert("Please select at least one.");
+          return false;
+      }
+      return true;
+   
+   }
+   
+</script>
+<div class="main-container container-fluid">
+   <a class="menu-toggler" id="menu-toggler" href="#">
+   <span class="menu-text"></span>
+   </a>
+   <?php include("includes/sidebar.php"); ?>
+   <div class="main-content">
+      <div class="breadcrumbs" id="breadcrumbs">
+         <ul class="breadcrumb">
+            <li>
+               <i class="icon-home home-icon"></i>
+               <a href="dashboard.php">Home</a>
+               <span class="divider">
+               <i class="icon-angle-right arrow-icon"></i>
+               </span>
+            </li>
+            <li class="active">Level Payout</li>
+         </ul>
+         <!--.breadcrumb-->
+      </div>
+      <div class="page-content">
+         <!--/.page-header-->
+         <div class="row-fluid">
+            <div class="span12">
+               <!--PAGE CONTENT BEGINS-->
+               <!--/row-->
+			       <?php 
+						   
+						   if(isset($_REQUEST['paysucc']))
+						   {
+						  ?> 
+						  
+						   <div class="alert alert-block alert-success">
+								<button type="button" class="close" data-dismiss="alert">
+									<i class="icon-remove"></i>
+								</button>
+
+							 <i class="icon-ok green"></i>
+								<strong class="green">
+									Payment Status Set to Paid Successfully !!!
+								</strong>
+						
+							</div>
+						   
+						   <?php }
+						   
+						   ?>
+						   <?php 
+						   
+						   if(isset($_REQUEST['payrev']))
+						   {
+						  ?> 
+						  
+						   <div class="alert alert-block alert-error">
+								<button type="button" class="close" data-dismiss="alert">
+									<i class="icon-remove"></i>
+								</button>
+
+							 <i class="icon-off red"></i>
+								<strong class="red">
+									Payment Status Reverted to Unpaid Successfully !!!
+								</strong>
+								
+							</div>
+						   
+						   <?php 
+						   }
+						   $user=isset($_REQUEST['user'])?$_REQUEST['user']:'';
+						   $from_date=isset($_REQUEST['fromdate'])?$_REQUEST['fromdate']:'';
+						   $to_date=isset($_REQUEST['todate'])?$_REQUEST['todate']:'';
+						   $today=isset($_REQUEST['today'])?$_REQUEST['today']:'';
+						   $lastten=isset($_REQUEST['lastten'])?$_REQUEST['lastten']:'';
+						   $monthly=isset($_REQUEST['monthly'])?$_REQUEST['monthly']:'';
+						   ?>
+               
+                  <div class="row-fluid">
+                     <div class="table-header">
+                        Level Payout Management
+						<span style="float:right; padding-right:10px;"><a href="export_payout.php?user=<?php echo $user; ?>&fromdate=<?php echo $from_date; ?>&todate=<?php echo $to_date; ?>&sindate=<?php echo $from_date; ?>&stodate=<?php echo $to_date; ?>&today=<?php echo $today; ?>&lastten=<?php echo $lastten; ?>&monthly=<?php echo $monthly; ?>&reason=level&search=search" style="text-decoration:none; color:#fff;">Export Report</a></span>
+                     </div><br/>
+					 
+					 <?php
+			$search="";
+			$temp="";
+	if(isset($_REQUEST["submit"]))
 	{
-	$row1 = $db->extract_single("select sum(pay_amount) as sum from mlm_purchase where pay_user='$_SESSION[userid]' AND (pay_date BETWEEN '$d4' and '$d3') AND pay_payment=$i");
-	$psum_d4[$i] = $row1;
-	if($psum_d4[$i] == NULL || $psum_d4[$i] == ""){$psum_d4[$i] = 0;}	
-	
-	$row2 = $db->extract_single("select sum(pay_amount) as sum from mlm_purchase where pay_user='$_SESSION[userid]' AND (pay_date BETWEEN '$d3' and '$d2') AND pay_payment=$i");
-	$psum_d3[$i] = $row2;
-	if($psum_d3[$i] == NULL || $psum_d3[$i] == ""){$psum_d3[$i] = 0;}
-
-	$row3 = $db->extract_single("select sum(pay_amount) as sum from mlm_purchase where pay_user='$_SESSION[userid]' AND (pay_date BETWEEN '$d2' and '$d1') AND pay_payment=$i");
-	$psum_d2[$i] = $row3;
-	if($psum_d2[$i] == NULL || $psum_d2[$i] == ""){$psum_d2[$i] = 0;}
-	
-	$row4 = $db->extract_single("select sum(pay_amount) as sum from mlm_purchase where pay_user='$_SESSION[userid]' AND (pay_date BETWEEN '$d1' and '$d0') AND pay_payment=$i");
-	$psum_d1[$i] = $row4;
-	if($psum_d1[$i] == NULL || $psum_d1[$i] == ""){$psum_d1[$i] = 0;}
-	
+		if(isset($_REQUEST["fromdate"]) && !empty($_REQUEST["fromdate"]) && isset($_REQUEST["todate"]) && !empty($_REQUEST["todate"]))
+		{
+			$FromDate= date("d-m-Y", strtotime($_REQUEST["fromdate"]));
+			$ToDate= date("d-m-Y", strtotime($_REQUEST["todate"]));
+			$search.=" and (DATE_FORMAT(FROM_UNIXTIME(date),'%d-%m-%Y') BETWEEN '$FromDate' AND '$ToDate')";
+			
+		}else if($_REQUEST['user'] && !empty($_REQUEST['user'])){
+			$em=stripslashes($_REQUEST['user']);
+			$search.="and user_id like '%$em%'";
+		}else if($_REQUEST['fromdate']!=""){
+			$Sindate= date("d-m-Y", strtotime($_REQUEST["fromdate"]));
+			$search.="and (DATE_FORMAT(FROM_UNIXTIME(date),'%d-%m-%Y') like '$Sindate')";
+		}else if($_REQUEST['todate']!=""){
+			$Todate= date("d-m-Y", strtotime($_REQUEST["todate"]));
+			$search.="and (DATE_FORMAT(FROM_UNIXTIME(date),'%d-%m-%Y') like '$Todate')";
+		}
+		else{
+			$FromDate="";
+			$ToDate="";
+			$em="";
+		}
+		
+	}
+	else{
+		$FromDate="";
+		$ToDate="";
+		$em="";
 	}
 	
-$psum_d4[3] = $psum_d4[2] + $psum_d4[1] + $psum_d4[0];
-$psum_d3[3] = $psum_d3[2] + $psum_d3[1] + $psum_d3[0];
-$psum_d2[3] = $psum_d2[2] + $psum_d2[1] + $psum_d2[0];
-$psum_d1[3] = $psum_d1[2] + $psum_d1[1] + $psum_d1[0];
-
-
-$user_active_num = $db->numrows("SELECT * FROM `mlm_register` WHERE user_sponserid = '$_SESSION[profileid]' AND user_status = 0");
-$user_inactive_num = $db->numrows("SELECT * FROM `mlm_register` WHERE user_sponserid = '$_SESSION[profileid]' AND user_status = 1");
-$user_temp_num = $db->numrows("SELECT * FROM `mlm_register` WHERE user_sponserid = '$_SESSION[profileid]' AND user_status = 5");
-
-?>
-<link href="css/pagination.css" rel="stylesheet" type="text/css" />
-<link href="css/B_red.css" rel="stylesheet" type="text/css" />
-
-<!-- style pie chart-->
-<style>
-#flotcontainer1 {
-    width: 300px;
-    height: 300px;
-    text-align: center;
-	background:#ffffff;
-	margin:auto;
-}
-#flotcontainer2 {
-    width: 300px;
-    height: 300px;
-    text-align: center;
-	background:#ffffff;
-	margin:auto;
-}
-#flotcontainer3 {
-    width: 300px;
-    height: 300px;
-    text-align: center;
-	background:#ffffff;
-	margin:auto;
-}
-</style>
-<!-- end-->
-</head>
-    <body>
-		<div class="container main">
-			<!-- Start Header-->
-			<?php include("includes/header.php"); ?>
-			<!-- End Header-->
-			<hr />
-			
-			<!-- Profile info -->
-			<?php include("includes/profileheader.php");	?>
-			
-			<div class="row" style="margin-top:30px;">
-			
-				<!-- left div here -->
-				
-                <?php include("includes/profilemenu.php"); ?>
-                
-				<div class="col-sm-9">
-                    <div class="row">
-                    
-						<h4 class="navbar-inner" style="color:black; line-height:40px; margin-top: -20px; margin-bottom: 7px;">Level Payout</h4>
-						<div class="table-responsive">
-						<table class="table table-striped new_tbl" cellpadding="7" cellspacing="5" border="0" width="100%">
-						<tr>
-							<td width="10%"><strong>S.No</strong></td>
-							<td width="25%"><strong>Amount</strong></td>
-							<td width="25%"><strong>Bonus Type</strong></td>
-							<!--<td width="25%"><strong>Date</strong></td>-->
-							<td width="25%"><strong>Status</strong></td>
-						</tr>
-						<?php
-						
-						$qry1=$db->get_all("select * from mlm_payout where user_id='$_SESSION[profileid]' and reason like 'level%' order by id desc");	
-						$count = $db->numrows("select * from mlm_payout where user_id='$_SESSION[profileid]' and reason like 'level%'");
-						$i=1;
-						foreach($qry1 as $qry){
-						$bt=$qry['bonus_type'];
-						if($bt==0){
-							$msg="Referal Bonus";
-						}else if($bt==1){
-							$msg="Pair Bonus";
-						}
-						else if($bt==2){
-							$msg="Pair capping payout";
-						}
-						$d=$qry['date'];
-						$status=(int)$qry['status'];
-						if($status==1){
-							$alert="Approved";
-						}else if($status==0){
-							$alert="Un-Approved";
-						}
-						$fromid=$qry['from_id'];
-						if(!empty($fromid)) $fpid=$fromid;
-						else if(empty($fromid)) $fpid="Admin";
-						
-						?>
-						<tr>
-							<td><?php echo $i;?></td>
-							<td><?php echo $qry['amount']; ?></td>
-							<td><?php echo $qry['reason']; ?></td>
-							<!--<td><?php echo $d; ?></td>-->
-							<td><?php echo $alert; ?></td>
-						</tr>
-						<?php $i++; } if($count==0){ echo "<td colspan='6' style='text-align:center;color: #f00;font-size: 14px;padding-top: 20px;'>No Records Found</td>"; } ?>
-						</table>
-						</div>
-					</div>
-				</div>	
-</div>	
-			
-</div>				
-            </div>
-			<div class="clearfix"></div>
-			<div class="container">
-			<?php include "includes/login-access-ads.php";?>
-			<?php include("includes/footer.php"); ?>
-			</div>
+	?>	
+		<div class="date">					
+			<form name="frmSearch" action="<?php $_SERVER['PHP_SELF']?>" method="POST" enctype="multipart/form-data">
+				<input type="text" name="user" id="email" value="<?php echo $user;?>" autocomplete="off" placeholder="User ID" />
+				<input type="text" name="fromdate" value="<?php echo $from_date; ?>" id="datepicker_from"  autocomplete="off" placeholder="From date" />
+				<input type="text" name="todate" id="datepicker_to" value="<?php echo $to_date; ?>" autocomplete="off" placeholder="To date" />	
+				<input type="submit" class="button" name="submit" value="Search">
+			</form>
 		</div>
+					 <form action="" method="post">
+                     <table class="table table-striped table-bordered table-hover" id="sample-table-2">
+                        <thead>
+                           <tr>
+						   <th width="24" class="center">
+							<label>
+								<input type="checkbox" />
+								<span class="lbl"></span>
+							</label>
+							</th>
+                              <th width="10">S.No</th>
+							   <th width="15">User ID</th>
+                              <th width="15">Commission Amount</th>
+                              <th width="15">Reason</th>
+                              <th width="15">Status</th>
+                              <th width="15">Action</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+							<?php
+							$i=1;
+							$curdate=date("d-m-Y");
+							
+							$que="select * from mlm_payout where amount!='' and reason like 'level%' $search";
+							if(isset($_REQUEST['today'])) {
+								$que.=" and DATE_FORMAT(FROM_UNIXTIME(date), '%d-%m-%Y')='$curdate'";
+							}
+							else if(isset($_REQUEST['lastten'])) {
+								$start=date('d-m-Y', strtotime('-10 day'));
+								$end=date('d-m-Y', strtotime('-1 day'));
+								$que.=" and (DATE_FORMAT(FROM_UNIXTIME(date), '%d-%m-%Y') between '$start' and '$end')";
+							}
+							else if(isset($_REQUEST['monthly'])) {
+								$start=date('d-m-Y', strtotime('first day of this month'));
+								$end=date('d-m-Y', strtotime('last day of this month'));
+								$que.=" and (DATE_FORMAT(FROM_UNIXTIME(date), '%d-%m-%Y') between '$start' and '$end')";
+							}
+							$que.=" order by id desc";
+							$pout=$db->get_all($que);
+							foreach($pout as $poutInfo) {
+							?>
+                            <tr>
+						   	<td class="center">
+								<label>
+									<input type="checkbox" id="chkval[]" name="chkval[]" value="<?php echo $poutInfo['id']; ?>"  />
+									<span class="lbl"></span>
+								</label>
+							 </td>
+                              <td><?php echo $i; ?></td>
+                              <td><?php echo $poutInfo['user_id']; ?></td>
+                              <td><?php echo $poutInfo['amount']; ?></td>
+                              <td><?php echo $poutInfo['reason']; ?></td>
+                              <td><?php
+                                 if($poutInfo['status']==0){
+                                 echo "Pending";
+                                 }
+                                 else{
+                                 echo "Approved";
+                                 }
+                                 ?></td>
+                              <td>
+							    <?php if($poutInfo['status']=='0') { ?>
+								<a class="red" href="payout.php?setpay=<?php echo $poutInfo['id'];?>" onclick="if(confirm('Are you sure want to Set Payment status to payed')) { return true; } else { return false; }">
+								<i class="icon-certificate bigger-130" title="click to activate"></i>
+								</a>
+								<?php } if($poutInfo['status']=='1') { ?>
+								<a class="green" href="payout.php?unsetpay=<?php echo $poutInfo['id']; ?>" onclick="if(confirm('Are you sure to Revert Payment Status')) { return true; } else { return false; }">
+								<i class="icon-certificate bigger-130" title="click to deactivate"></i>
+								</a>
+                                <?php } ?>
+                              </td>
+                           </tr>
+                           <?php $i++; }?>
+                        </tbody>
+                     </table>
+                  </div>
+                  <div class="modal-footer">
+					 <a href="export_payout.php?tmonth=<?php echo $date;?>"><input type="button" name="tmonth" id="tmonth" style="color:#FFFFFF; margin-top:5px;" class="btn btn-small btn-grey pull-left btn-info"  title="Last Three month Report" value="Last 3 Month"></a>
+								
+					<a href="export_payout.php?smonth=<?php echo $sdate;?>"><input type="button" name="smonth" id="smonth" style="color:#FFFFFF; margin-top:5px;" class="btn btn-small btn-grey pull-left btn-info"  title="Last Three month Report" value="Last 6 Month"></a>
+								
+					<a href="export_payout.php?ymonth=<?php echo $ydate;?>"><input type="button" name="ymonth" id="ydate" style="color:#FFFFFF; margin-top:5px;" class="btn btn-small btn-grey pull-left btn-info"  title="1 Year Report" value="Last 1 Year"></a>
+					
+					 <input type="submit" name="mul_delete" id="mul_delete" value="Delete" onclick="return muldel();" style="color:#FFFFFF; margin-top:5px;" class="btn btn-small btn-danger pull-left btn-info" title="click to delete" />
+								
+					<input type="submit" name="mul_active" id="mul_active" value="Set Paid" onclick="return muldel();" style="color:#FFFFFF; margin-top:5px;" class="btn btn-small btn-success pull-left btn-info" title="Set Paid"/>
+					
+					<input type="submit" name="mul_inactive" id="mul_inactive" value="Set Un-paid" onclick="return muldel();" style="color:#FFFFFF; margin-top:5px;" class="btn btn-small btn-grey pull-left btn-info" title="Set Un-Paid"/>
+                   
+                  </div>
+                  <div class="modal-footer1">
+					 <a class="green">
+					 <i title="Set Status to Paid" class="icon-certificate bigger-130"></i>
+					 </a> = Approved
+					 </span>
+                     <span>
+					 <a class="red">
+                     <i title="Set Status to Un-Paid" class="icon-certificate bigger-130"></i>
+                     </a> = Disapproved
+					 </span>
+                  </div>
+               </form>
+			   
+               <?php
+				$uid=$user;
+				$search="where reason like 'level%'";
+				if($uid!=""){
+					$em=stripslashes($_REQUEST['user']);
+					$search.="and user_id like '%$em%' and  amount!=''";
+										
+				}
+			
+				if($from_date!="" && $to_date!=""){
+					$FromDate= date("d-m-Y", strtotime($_REQUEST["fromdate"]));
+					$ToDate= date("d-m-Y", strtotime($_REQUEST["todate"]));
+					$search.="and (DATE_FORMAT(FROM_UNIXTIME(date),'%d-%m-%Y') BETWEEN '$FromDate' AND '$ToDate') and amount!=''";
+				}
+				
+				
+				$header = array("user_id","amount","reason");
+				$ext_obj->pdfExportbtn($header, "mlm_payout","$search");
+				?>
+            </div>
+            <!--PAGE CONTENT ENDS-->
+         </div>
+         <!--/.span-->
+      </div>
+      <!--/.row-fluid-->
+   </div>
+   <!--/.page-content-->
+   <div class="ace-settings-container" id="ace-settings-container">
+     <!-- <div class="btn btn-app btn-mini btn-warning ace-settings-btn" id="ace-settings-btn">
+         <i class="icon-cog bigger-150"></i>
+      </div>-->
+      <div class="ace-settings-box" id="ace-settings-box">
+         <div>
+            <div class="pull-left">
+               <select id="skin-colorpicker" class="hide">
+                  <option data-class="default" value="#438EB9" />#438EB9
+                  <option data-class="skin-1" value="#222A2D" />#222A2D
+                  <option data-class="skin-2" value="#C6487E" />#C6487E
+                  <option data-class="skin-3" value="#D0D0D0" />#D0D0D0
+               </select>
+            </div>
+            <span>&nbsp; Choose Skin</span>
+         </div>
+         <div>
+            <input type="checkbox" class="ace-checkbox-2" id="ace-settings-header" />
+            <label class="lbl" for="ace-settings-header"> Fixed Header</label>
+         </div>
+         <div>
+            <input type="checkbox" class="ace-checkbox-2" id="ace-settings-sidebar" />
+            <label class="lbl" for="ace-settings-sidebar"> Fixed Sidebar</label>
+         </div>
+         <div>
+            <input type="checkbox" class="ace-checkbox-2" id="ace-settings-breadcrumbs" />
+            <label class="lbl" for="ace-settings-breadcrumbs"> Fixed Breadcrumbs</label>
+         </div>
+         <div>
+            <input type="checkbox" class="ace-checkbox-2" id="ace-settings-rtl" />
+            <label class="lbl" for="ace-settings-rtl"> Right To Left (rtl)</label>
+         </div>
+      </div>
+   </div>
+   <!--/#ace-settings-container-->
+</div>
+<!--/.main-content-->
+</div><!--/.main-container-->
+<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-small btn-inverse">
+<i class="icon-double-angle-up icon-only bigger-110"></i>
+</a>
 
-		<script src="js/jquery.js"></script>
-        <script src="js/bootstrap.js"></script>
-		
-<link href="c3/c3.css" rel="stylesheet" type="text/css">
-<script src="d3/d3.v3.min.js"></script>
-<script src="c3/c3.min.js"></script>
+		<!--basic scripts-->
 
-<script type="text/javascript">
+		<!--[if !IE]>-->
 
-var pie1 = c3.generate({
-    bindto: '#flotcontainer1',
-    data: {
-      columns: [
-        ['Success',<?php echo $pay_sum_s;?>],
-		['Pending',<?php echo $pay_sum_f;?>]
-        
-      ],
-	  type:'pie',
-	  colors: {
-            Success: '#73e600',
-            Pending: '#ffcc00'
-        }
-    }
-});
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 
-var pie2 = c3.generate({
-    bindto: '#flotcontainer2',
-    data: {
-      columns: [
-        ['Active', <?php echo $user_active_num; ?>],
-		['Temp', <?php echo $user_temp_num; ?>],
-		['Requested', <?php echo $user_inactive_num; ?>]
-        
-      ],
-	  type:'pie',
-	  colors: {
-            Active: '#73e600',
-			Temp: '#ffcc00',
-            Requested: '#ff471a'
-        }
-    }
-});
+		<!--<![endif]-->
 
-var pie3 = c3.generate({
-    bindto: '#flotcontainer3',
-    data: {
-      columns: [
-        ['Success', <?php echo $puram_sum_s; ?>],
-		['Pending', <?php echo $puram_sum_p; ?>],
-		['Failed', <?php echo $puram_sum_f; ?>]
-        
-      ],
-	  type:'pie',
-	  colors: {
-            Success: '#73e600',
-            Pending: '#ffcc00',
-			Failed: '#ff471a'
-        }
-    }
-});
+		<!--[if !IE]>-->
 
-var line1 = c3.generate({
-    bindto: '#linechart',
-    data: {
-      columns: [
-        ['Overall purchase value',<?php echo $psum_d4[3];?>,<?php echo $psum_d3[3];?>,<?php echo $psum_d2[3];?>,<?php echo $psum_d1[3];?>]
-      ],
-	  colors: {
-            
-        }
-    },
-	axis: {
-        x: {
-            type: 'category',
-            categories: ['end of 4th week','end of 3rd week','end of 2nd week','end of last week']
-        }
-    }
-});
+		<script type="text/javascript">
+			window.jQuery || document.write("<script src='assets/js/jquery-2.0.3.min.js'>"+"<"+"/script>");
+		</script>
 
-setTimeout(function () {
-    line1.load({
-        columns: [
-            ['process purchase value',<?php echo $psum_d4[0];?>,<?php echo $psum_d3[0];?>,<?php echo $psum_d2[0];?>,<?php echo $psum_d1[0];?>]
-        ]
-    });
-}, 2000);
-
-setTimeout(function () {
-    line1.load({
-        columns: [
-            ['process purchase value',<?php echo $psum_d4[0];?>,<?php echo $psum_d3[0];?>,<?php echo $psum_d2[0];?>,<?php echo $psum_d1[0];?>]
-        ]
-    });
-}, 2000);
-
-setTimeout(function () {
-    line1.load({
-        columns: [
-			['Success purchase value',<?php echo $psum_d4[1];?>,<?php echo $psum_d3[1];?>,<?php echo $psum_d2[1];?>,<?php echo $psum_d1[1];?>]
-        ]
-    });
-}, 4000);
-
-setTimeout(function () {
-    line1.load({
-        columns: [
-			['Failed purchase value',<?php echo $psum_d4[2];?>,<?php echo $psum_d3[2];?>,<?php echo $psum_d2[2];?>,<?php echo $psum_d1[2];?>]
-        ]
-    });
-}, 6000);
+		<!--<![endif]-->
 
 
+		<script type="text/javascript">
+			if("ontouchend" in document) document.write("<script src='assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
+		</script>
+		<script src="assets/js/bootstrap.min.js"></script>
 
+		<!--page specific plugin scripts-->
+
+		<script src="assets/js/jquery.dataTables.min.js"></script>
+		<script src="assets/js/jquery.dataTables.bootstrap.js"></script>
+
+		<!--ace scripts-->
+
+		<script src="assets/js/ace-elements.min.js"></script>
+		<script src="assets/js/ace.min.js"></script>
+
+		<!--inline scripts related to this page-->
+
+		<script type="text/javascript">
+			$(function() {
+				var oTable1 = $('#sample-table-2').dataTable( {
+				"aoColumns": [
+			      { "bSortable": false },
+			     null,null,null,null,null,{ "bSortable": false }
+				] } );
+				
+				
+				$('table th input:checkbox').on('click' , function(){
+					var that = this;
+					$(this).closest('table').find('tr > td:first-child input:checkbox')
+					.each(function(){
+						this.checked = that.checked;
+						$(this).closest('tr').toggleClass('selected');
+					});
+						
+				});
+			
+			
+				$('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+				function tooltip_placement(context, source) {
+					var $source = $(source);
+					var $parent = $source.closest('table')
+					var off1 = $parent.offset();
+					var w1 = $parent.width();
+			
+					var off2 = $source.offset();
+					var w2 = $source.width();
+			
+					if( parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2) ) return 'right';
+					return 'left';
+				}
+			})
+		</script>
+
+<link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css" rel="stylesheet"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<script>
+  $( function() {
+    $( "#datepicker_from" ).datepicker();
+  } );
+  $( function() {
+    $( "#datepicker_to" ).datepicker();
+  } );
+  </script>
+
+<script>
+function valid() {
+	var fromDate = document.getElementById("datepicker_from").value;
+	var toDate = document.getElementById("datepicker_to").value;
+	if(toDate<fromDate) {
+		alert('Please select the valid date');
+		document.getElementById("datepicker_to").value="";
+		document.getElementById("datepicker_to").focus();
+		return false;
+	}
+}
 </script>
-<!-- end -->
-		
-		
-	</body>
+</body>
 </html>

@@ -1,29 +1,26 @@
-<?php 
-include("admin/AMframe/config.php");
+<?php
+include("AMframe/config.php");
+include("includes/header.php");
 
-if(!(isset($_SESSION['profileid'])) && !(isset($_SESSION['userid'])))
+if((!isset($_SESSION['admin_id'])) && ($_SESSION['admin_id']==""))
 {
 header("location:index.php");
-
-echo "<script>window.location='index.php'</script>";
-
 }
 
+$menu18='class="active"';
+ 
 if(isset($_REQUEST['submit']))
 {
 $email=addslashes($_REQUEST['email']);
-$user_type=addslashes($_REQUEST['type']);
+$user_type="2";
 
-$user_pid=addslashes($_REQUEST['pfid']);
+$user_pid=addslashes($_REQUEST['profileid']);
 $sub=addslashes($_REQUEST['subject']);
 $msgg=addslashes($_REQUEST['messaggge']);
 
 $toqry=$db->singlerec("select * from mlm_register where user_profileid='$user_pid'");
-if($user_pid=="")
-{
-$user_pid="Admin";
-}
-$qry=$db->insertrec("insert into mlm_outbox set outbox_userid='$_SESSION[userid]',outbox_profileid='$_SESSION[profileid]', 	outbox_toupid='$toqry[user_id]',outbox_toprofileid='$user_pid',outbox_usertype='$user_type',outbox_fromemail='$email',outbox_toemail='$toqry[user_email]',outbox_subject='$sub',outbox_message='$msgg', outbox_date=NOW()");
+
+$qry=mysql_query("insert into mlm_outbox set outbox_userid='admin',outbox_profileid='Admin',outbox_toupid='$toqry[user_id]',outbox_toprofileid='$user_pid',outbox_usertype='$user_type',outbox_fromemail='$email',outbox_toemail='$toqry[user_email]',outbox_subject='$sub',outbox_message='$msgg', outbox_date=NOW()");
 
 if($qry)
 {
@@ -32,10 +29,8 @@ echo "<script>window.location='compose.php?succ';</script>";
 }
 
 }
-
-include("includes/head.php");
-
 ?>
+
 <script type="text/javascript" src="tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
  <script type="text/javascript">
 	tinyMCE.init({
@@ -101,7 +96,8 @@ document.getElementById('pval').style.display='none';
 <script>
 function composseval()
 {
-
+if(document.getElementById('pfid').value!="")
+{
 
 if(document.getElementById('subject').value!="")
 {
@@ -115,101 +111,359 @@ document.getElementById('messaggge').focus();
 return false;
 }
 
-
+}
 }
 }
 
 </script>
-<link href="css/deactive.css" rel="stylesheet" type="text/css" />
-</head>
-    <body>
-		<div class="container main">
-			<!-- Start Header-->
-			<?php include("includes/header.php"); ?>
-			<!-- End Header-->
-			<hr />			
-			<!-- Profile info -->
-			<?php include("includes/profileheader.php");	?>
-			<!-- Profile info end -->			
-			<hr />			
-			<div class="row">
-                <?php include("includes/mailmenu.php"); ?>
-                <div class="col-sm-9">
-                    <div class="row">
-                        <div class="col-sm-12">
-							<div class="banner" style="padding-right: 0;">
-								<h4 class="navbar-inner" style="color:#000; line-height:40px; margin-top: -50px; margin-bottom: 7px;">Compose Mail</h4>
-							<form action="" method="post" onClick="return composseval();">
-                                <table class="table new_tbl2" cellpadding="7" cellspacing="0" border="0" width="100%">
-									<?php if(isset($_REQUEST['succ'])) { ?>
-									<tr>
-									<td colspan="3" align="center" style="color:#006633; font-weight:bold;">
-									Message Sent Successfully !!!
-									</td>
-									
-									</tr>
-									<?php } ?>
-									<tr>
-									<td colspan="3">
-										<table>
-										<td width="" >
-											<strong>User Type</strong></td>
-										<td width="15">:</td>
-										<td width="">
-											<input type="radio" name="type" id="type1" value="1" onClick="typval('1');" required="true";> Admin &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-											<input type="radio" name="type" id="type2" value="2" onClick="typval('2');" required="true";> User &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-									  </td></table></td>
-									</tr>
-									
-										<tr>
-										<td colspan="3">
-										<table id="pval" style="display:none;">
-										<td width="100">
-											<strong>User Profileid</strong>	</td>
-										<td width="50">:</td>
-										<td width="500">
-											<input type="text" name="pfid" id="pfid"  class="form-control" />
-										</td></table></td>
-									</tr>
-									
-									<tr>
-										<td align="right">
-											<strong>Subject</strong>
-										</td>
-										<td align="center">:</td>
-										<td>
-											<input type="text" name="subject" id="subject" class="form-control"  required="true";/>
-										</td>
-									</tr>
-									<tr>
-										<td align="right">
-											<strong>Message</strong>
-										</td>
-										<td align="center">:</td>
-										<td>
-										<textarea name="messaggge" id="messaggge" rows="10" class="form-control" ></textarea>
-										</td>
-									</tr>
-									
-									<input type="hidden" name="email" id="email" value="<?php echo $userdetail['user_email']; ?>">									
-									<tr>
-										<td colspan="3" align="center">
-											<button type="submit" name="submit" class="greenbtn">SEND</button>
-										</td>
-									</tr>
-								</table>
-								</form>
+
+
+
+		<div class="main-container container-fluid">
+			<a class="menu-toggler" id="menu-toggler" href="#">
+				<span class="menu-text"></span>
+			</a>
+
+			<?php include("includes/sidebar.php"); ?>
+
+			<div class="main-content">
+				<div class="breadcrumbs" id="breadcrumbs">
+					<ul class="breadcrumb">
+						<li>
+							<i class="icon-home home-icon"></i>
+							<a href="#">Home</a>
+
+							<span class="divider">
+								<i class="icon-angle-right arrow-icon"></i>
+							</span>
+						</li>
+
+						<li>
+							<a href="#">Support Center</a>
+
+							<span class="divider">
+								<i class="icon-angle-right arrow-icon"></i>
+							</span>
+						</li>
+						<li class="active">Compose Mail</li>
+					</ul><!--.breadcrumb-->
+
+					
+				</div>
+
+				<div class="page-content">
+					<div class="page-header position-relative">
+						<h1>
+							Support Center
+							<small>
+								<i class="icon-double-angle-right"></i>
+								Compose Mail
+							</small>
+						</h1>
+					</div><!--/.page-header-->
+                         
+					<div class="row-fluid">
+						<div class="span12">
+							<!--PAGE CONTENT BEGINS-->
+                           
+						  <?php 
+						   
+						   if(isset($_REQUEST['success']))
+						   {
+						  ?> 
+						  
+						   <div class="alert alert-block alert-success">
+								<button type="button" class="close" data-dismiss="alert">
+									<i class="icon-remove"></i>
+								</button>
+
+							 <i class="icon-ok green"></i>
+								<strong class="green">
+									Password Updated Successfully !!!
+								</strong>
+						
 							</div>
-                        </div>
-                    </div>
-                    <br />
-                </div>
-				
-            </div>
+						   
+						   <?php }
+						   
+						   ?>
+						   
+							<form class="form-horizontal" name="pass" action="" method="post" onSubmit="return passvalidate();">
+                            <?php  if(isset($_REQUEST['succ'])) { ?>
+							
+                            <div align="center" style="color:#060; padding-right:300px;">
+                            Message has been sent successfully !!!
+                            </div>
+                            <?php } ?>
+								<div class="control-group">
+									<label class="control-label" for="form-field-1">User Profileid <span style="color:#FF0000;">*</span> : </label>
+
+									<div class="controls">
+										<input type="text" name="profileid" id="profileid" required='required'/>
+									</div>
+								</div>
+
+							<div class="control-group">
+									<label class="control-label" for="form-field-1">Subject <span style="color:#FF0000;">*</span> : </label>
+
+									<div class="controls">
+										<input type="text" name="subject" id="subject" required="required"/>
+									
+									</div>
+								</div>	
+								
+									<div class="control-group">
+									<label class="control-label" for="form-field-1">Message <span style="color:#FF0000;">*</span> : </label>
+
+									<div class="controls">
+										<textarea name="messaggge" id="messaggge"></textarea>
+									</div>
+								</div>	
+														
+								<input type="hidden" name="email" id="email" value="<?php echo $website_admin; ?>" />
+								<div class="form-actions">
+								<input type="submit" name="submit" value="SEND" class="btn btn-info" style="font-weight:bold;">
+									
+									<input type="reset" name="reset" value="RESET" class="btn" style="font-weight:bold;">
+									
+								</div>
+
+								<div class="hr"></div>
+								
+							</form>
+	<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-small btn-inverse">
+			<i class="icon-double-angle-up icon-only bigger-110"></i>
+		</a>
+
+		<!--basic scripts-->
+
+		<!--[if !IE]>-->
+
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+		<!--<![endif]-->
+
+		<!--[if !IE]>-->
+
+		<script type="text/javascript">
+			window.jQuery || document.write("<script src='assets/js/jquery-2.0.3.min.js'>"+"<"+"/script>");
+		</script>
+
+		<!--<![endif]-->
+
+		<script type="text/javascript">
+			if("ontouchend" in document) document.write("<script src='assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
+		</script>
+		<script src="assets/js/bootstrap.min.js"></script>
+
+		<!--page specific plugin scripts-->
+
+		<script src="assets/js/jquery-ui-1.10.3.custom.min.js"></script>
+		<script src="assets/js/jquery.ui.touch-punch.min.js"></script>
+		<script src="assets/js/jquery.slimscroll.min.js"></script>
+		<script src="assets/js/jquery.easy-pie-chart.min.js"></script>
+		<script src="assets/js/jquery.sparkline.min.js"></script>
+		<script src="assets/js/flot/jquery.flot.min.js"></script>
+		<script src="assets/js/flot/jquery.flot.pie.min.js"></script>
+		<script src="assets/js/flot/jquery.flot.resize.min.js"></script>
+
+		<!--ace scripts-->
+
+		<script src="assets/js/ace-elements.min.js"></script>
+		<script src="assets/js/ace.min.js"></script>
+
+		<!--inline scripts related to this page-->
+
+		<script type="text/javascript">
+			$(function() {
+				$('.easy-pie-chart.percentage').each(function(){
+					var $box = $(this).closest('.infobox');
+					var barColor = $(this).data('color') || (!$box.hasClass('infobox-dark') ? $box.css('color') : 'rgba(255,255,255,0.95)');
+					var trackColor = barColor == 'rgba(255,255,255,0.95)' ? 'rgba(255,255,255,0.25)' : '#E2E2E2';
+					var size = parseInt($(this).data('size')) || 50;
+					$(this).easyPieChart({
+						barColor: barColor,
+						trackColor: trackColor,
+						scaleColor: false,
+						lineCap: 'butt',
+						lineWidth: parseInt(size/10),
+						animate: /msie\s*(8|7|6)/.test(navigator.userAgent.toLowerCase()) ? false : 1000,
+						size: size
+					});
+				})
 			
-			<?php include("includes/footer.php"); ?>
-		</div>
-		<script src="js/jquery.js"></script>
-        <script src="js/bootstrap.js"></script>
+				$('.sparkline').each(function(){
+					var $box = $(this).closest('.infobox');
+					var barColor = !$box.hasClass('infobox-dark') ? $box.css('color') : '#FFF';
+					$(this).sparkline('html', {tagValuesAttribute:'data-values', type: 'bar', barColor: barColor , chartRangeMin:$(this).data('min') || 0} );
+				});
+			
+
+			  var placeholder = $('#piechart-placeholder').css({'width':'90%' , 'min-height':'150px'});
+			  var data = [
+				{ label: "social networks",  data: 38.7, color: "#68BC31"},
+				{ label: "search engines",  data: 24.5, color: "#2091CF"},
+				{ label: "ad campaings",  data: 8.2, color: "#AF4E96"},
+				{ label: "direct traffic",  data: 18.6, color: "#DA5430"},
+				{ label: "other",  data: 10, color: "#FEE074"}
+			  ]
+			  function drawPieChart(placeholder, data, position) {
+			 	  $.plot(placeholder, data, {
+					series: {
+						pie: {
+							show: true,
+							tilt:0.8,
+							highlight: {
+								opacity: 0.25
+							},
+							stroke: {
+								color: '#fff',
+								width: 2
+							},
+							startAngle: 2
+						}
+					},
+					legend: {
+						show: true,
+						position: position || "ne", 
+						labelBoxBorderColor: null,
+						margin:[-30,15]
+					}
+					,
+					grid: {
+						hoverable: true,
+						clickable: true
+					}
+				 })
+			 }
+			 drawPieChart(placeholder, data);
+			
+			 /**
+			 we saved the drawing function and the data to redraw with different position later when switching to RTL mode dynamically
+			 so that's not needed actually.
+			 */
+			 placeholder.data('chart', data);
+			 placeholder.data('draw', drawPieChart);
+			
+			
+			
+			  var $tooltip = $("<div class='tooltip top in hide'><div class='tooltip-inner'></div></div>").appendTo('body');
+			  var previousPoint = null;
+			
+			  placeholder.on('plothover', function (event, pos, item) {
+				if(item) {
+					if (previousPoint != item.seriesIndex) {
+						previousPoint = item.seriesIndex;
+						var tip = item.series['label'] + " : " + item.series['percent']+'%';
+						$tooltip.show().children(0).text(tip);
+					}
+					$tooltip.css({top:pos.pageY + 10, left:pos.pageX + 10});
+				} else {
+					$tooltip.hide();
+					previousPoint = null;
+				}
+				
+			 });
+			
+			
+				var d1 = [];
+				for (var i = 0; i < Math.PI * 2; i += 0.5) {
+					d1.push([i, Math.sin(i)]);
+				}
+			
+				var d2 = [];
+				for (var i = 0; i < Math.PI * 2; i += 0.5) {
+					d2.push([i, Math.cos(i)]);
+				}
+			
+				var d3 = [];
+				for (var i = 0; i < Math.PI * 2; i += 0.2) {
+					d3.push([i, Math.tan(i)]);
+				}
+				
+			
+				var sales_charts = $('#sales-charts').css({'width':'100%' , 'height':'220px'});
+				$.plot("#sales-charts", [
+					{ label: "Domains", data: d1 },
+					{ label: "Hosting", data: d2 },
+					{ label: "Services", data: d3 }
+				], {
+					hoverable: true,
+					shadowSize: 0,
+					series: {
+						lines: { show: true },
+						points: { show: true }
+					},
+					xaxis: {
+						tickLength: 0
+					},
+					yaxis: {
+						ticks: 10,
+						min: -2,
+						max: 2,
+						tickDecimals: 3
+					},
+					grid: {
+						backgroundColor: { colors: [ "#fff", "#fff" ] },
+						borderWidth: 1,
+						borderColor:'#555'
+					}
+				});
+			
+			
+				$('#recent-box [data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+				function tooltip_placement(context, source) {
+					var $source = $(source);
+					var $parent = $source.closest('.tab-content')
+					var off1 = $parent.offset();
+					var w1 = $parent.width();
+			
+					var off2 = $source.offset();
+					var w2 = $source.width();
+			
+					if( parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2) ) return 'right';
+					return 'left';
+				}
+			
+			
+				$('.dialogs,.comments').slimScroll({
+					height: '300px'
+			    });
+				
+				
+				//Android's default browser somehow is confused when tapping on label which will lead to dragging the task
+				//so disable dragging when clicking on label
+				var agent = navigator.userAgent.toLowerCase();
+				if("ontouchstart" in document && /applewebkit/.test(agent) && /android/.test(agent))
+				  $('#tasks').on('touchstart', function(e){
+					var li = $(e.target).closest('#tasks li');
+					if(li.length == 0)return;
+					var label = li.find('label.inline').get(0);
+					if(label == e.target || $.contains(label, e.target)) e.stopImmediatePropagation() ;
+				});
+			
+				$('#tasks').sortable({
+					opacity:0.8,
+					revert:true,
+					forceHelperSize:true,
+					placeholder: 'draggable-placeholder',
+					forcePlaceholderSize:true,
+					tolerance:'pointer',
+					stop: function( event, ui ) {//just for Chrome!!!! so that dropdowns on items don't appear below other items after being moved
+						$(ui.item).css('z-index', 'auto');
+					}
+					}
+				);
+				$('#tasks').disableSelection();
+				$('#tasks input:checkbox').removeAttr('checked').on('click', function(){
+					if(this.checked) $(this).closest('li').addClass('selected');
+					else $(this).closest('li').removeClass('selected');
+				});
+				
+			
+			})
+		</script>
+				
+		
 	</body>
 </html>
