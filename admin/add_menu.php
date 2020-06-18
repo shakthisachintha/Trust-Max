@@ -29,7 +29,7 @@ $page=$_REQUEST['page'];
 			exit;
 		}else if(!empty($file)){
 		$date=date("Y-m-d H:i:s");
-		$s=$db->insertrec("insert into main_menu (menu_name,menu_file,menu_icon,active_status,usercreate,param,crcdt) values('$name','$file','$micon','1','$ad_name','0','$date')");
+		s$=$db->insertrec("insert into main_menu (menu_name,menu_file,menu_icon,active_status,usercreate,param,crcdt) values('$name','$file','$micon','1','$ad_name','0','$date')");
 		$act="add";
 		}else{
 		$s=$db->insertrec("insert into main_menu (menu_name,menu_icon,active_status,usercreate,param,crcdt) values('$name','$micon','1','$ad_name','0','$date')");

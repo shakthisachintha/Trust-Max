@@ -1,10 +1,10 @@
 <?php
 class database {
     private $host="localhost";
-    private $user ="ark-max";
-    // private $user ="root";
-    private $password ='z-si8X,q*TT.';
-    // private $password ='';
+    // private $user ="ark-max";
+    private $user ="root";
+    // private $password ='z-si8X,q*TT.';
+    private $password ='';
     private $database = "t-max-nuk";
     private $dbh;
     private $error;
