@@ -15,8 +15,8 @@ if (isset($_REQUEST['delete'])) {
 	$del = $db->insertrec("delete from mlm_withdrawrequsets where req_id='$delete'");
 
 	if ($del) {
-		header("location:cancel_withdraw.php?delsucc");
-		echo "<script>window.location='cancel_withdraw.php?delsucc';</script>";
+		header("location:wallet.php?delsucc");
+		echo "<script>window.location='wallet.php?delsucc';</script>";
 	}
 }
 

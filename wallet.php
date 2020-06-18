@@ -27,7 +27,6 @@ $balance = $dr - $cr;
 $total = $newTotalBal['di'] + $newTotalBal['drl'] + $newTotalBal['ri'] + $newTotalBal['at'];
 $available = $availBalance['di'] + $availBalance['drl'] + $availBalance['ri'] + $availBalance['at'];
 
-$withdraw = $available - $withdrawBal;
 $pending = $total - $withdrawBal;
 ?>
 
@@ -272,7 +271,7 @@ $withdraw = $available - $withdrawBal;
                     <div class="row">
                         <div class="col-sm-4">
                             <label class="cb-enable selected">
-                                <span> Total Balance </span>
+                                <span> Total Income </span>
                             </label>
                             <label class="cb-disable">
                                 <span style="min-width:50px;"><?= $total . " " . $sitecurrency; ?></span>
@@ -280,7 +279,7 @@ $withdraw = $available - $withdrawBal;
                         </div>
                         <div class="col-sm-4">
                             <label class="cb-enable selected">
-                                <span>Available Amount </span>
+                                <span>Available to Withdraw </span>
                             </label>
                             <label class="cb-disable">
                                 <span style="min-width:50px;"><?= $withdraw . " " . $sitecurrency; ?></span>
@@ -288,9 +287,9 @@ $withdraw = $available - $withdrawBal;
                         </div>
                         <div class="col-sm-4">
                             <label class="cb-enable selected">
-                                <span>Pending Balance </span>
+                                <span>Total Withdrawn </span>
                             </label>
-                            <label class="cb-disable"><span style="min-width:50px;"><?= $pending . " " . $sitecurrency; ?></span></label>
+                            <label class="cb-disable"><span style="min-width:50px;"><?= $withdrawBal . " " . $sitecurrency; ?></span></label>
                         </div>
                     </div>
 
@@ -381,7 +380,7 @@ $withdraw = $available - $withdrawBal;
                                                     <tr>
                                                         <td><?= $i; ?></td>
                                                         <td><?= $rreqq['req_message']?></td>
-                                                        <td><?= $rreqq['req_cvamount']?></td>
+                                                        <td>USD <?= $rreqq['req_cvamount']?></td>
                                                         <td><?= date("d-m-Y", strtotime($rreqq['req_date']))?></td>
                                                         <td class="font-weight-bold">
                                                             <?php if ($rreqq['req_rpstatus'] == 0): ?>
@@ -426,8 +425,7 @@ $withdraw = $available - $withdrawBal;
 										<tr>
 											<td width="6%">
 												<strong>SNO</strong></td>
-											<td width="17%" style="text-align:left;">
-												<strong>SUBJECT</strong></td>
+											
 											<td width="25%">
 												<strong>MESSAGE</strong></td>
 											<td width="10%">
@@ -442,8 +440,8 @@ $withdraw = $available - $withdrawBal;
 										</tr>
 									</thead>
 									<?php
-									$reqq = $db->get_all("select * from mlm_withdrawrequsets where req_status='1' and req_userid='$_SESSION[userid]'");
-									$nom_rows = $db->numrows("select * from mlm_withdrawrequsets where req_status='1' and req_userid='$_SESSION[userid]'");
+									$reqq = $db->get_all("select * from mlm_withdrawrequsets where req_rpstatus='2' and req_userid='$_SESSION[userid]'");
+									$nom_rows = $db->numrows("select * from mlm_withdrawrequsets where req_rpstatus='2' and req_userid='$_SESSION[userid]'");
 
 									?>
 									<?php if ($nom_rows == 0) : ?>
@@ -459,15 +457,14 @@ $withdraw = $available - $withdrawBal;
 
 											<tr>
 												<td><?= $i; ?></td>
-												<td style="text-align:left;"><?= $rreqq['req_subject']; ?></td>
 												<td><?= $rreqq['req_message']; ?></td>
-												<td><?= $rreqq['req_cvamount']; ?></td>
+												<td><?= $rreqq['req_cvamount']; ?> USD</td>
 												<td><?= date("d-m-Y", strtotime($rreqq['req_date'])); ?></td>
 												<td class="font-weight-bold">
 													<?php if ($rreqq['req_rpstatus'] == '0'): ?>
 														<span class="text-danger">Pending</span>
 													<?php else: ?>
-														<span class="text-success">Replied</span>
+														<span class="text-danger">Rejected</span>
 													<?php endif; ?>
 												</td>
 												<td>
@@ -553,7 +550,7 @@ $withdraw = $available - $withdrawBal;
                 var amt = <?php echo $withdraw; ?>;
                 var minw = <?php echo $gen_minwithdraw; ?>;
                 var inamt = str;
-                if (inamt < minw) {
+                if (inamt < minw-1) {
                     document.getElementById('amount').value = "";
                     alert("Minimum with draw amount must be " + minw + " ! Please try again .");
                 } else if (inamt > amt) {

@@ -37,13 +37,7 @@ $_SESSION['epid'] = $epin_decode;
                         </a>
                     </div>
                     <h4 class="text-center" style="color: #44ce6f;">Register</h4>
-                    <!--<ul class="nav nav-tabs" role="tablist">
-               <li class="nav-item">
-                    <a class="nav-link bg-transparent active" href="#register" data-toggle="tab" role="tab" aria-selected="false">
-                        <span>Step 1 * (Basic Information)</span>
-                    </a>
-                </li>
-            </ul>-->
+
                     <div class="tab-content">
 
                         <div class="tab-pane fade active show" role="tabpanel" id="register">
@@ -145,7 +139,7 @@ $_SESSION['epid'] = $epin_decode;
                                         <div class="form-group">
                                             <label><b>Tree Side: <span class="required">*</span></b> </label>
                                             <div class="form-group">
-                                                <select name="tree_side" class="form-control" id="tree_side">
+                                                <select name="position" class="form-control" id="position">
                                                     <option value="left">Left</option>
                                                     <option value="right">Right</option>
                                                 </select>
@@ -163,7 +157,7 @@ $_SESSION['epid'] = $epin_decode;
                                             <div class="form-group">
                                                 <select name="reward_plan" class="form-control" id="reward_plan">
                                                     <?foreach($reward_plans as $plan):?>
-                                                    <option value="<?=$plan['id']?>"><?=ucwords($plan['name']."(".$plan['points'].")")?></option>
+                                                    <option value="<?= $plan['id'] ?>"><?= ucwords($plan['name'] . "(" . $plan['points'] . ")") ?></option>
                                                     <?endforeach;?>
                                                     <!-- <option value="reward1">Reward Plan 1 (5 Points)</option>
                                                     <option value="reward2">Reward Plan 2 (10 Points)</option> -->
@@ -213,16 +207,15 @@ $_SESSION['epid'] = $epin_decode;
     </script>
 <?php } ?>
 <script>
-    < ? php
+    <?php
     if (!empty($sid) && ($leg_selection == "manual")) {
-        ?
-        >
+    ?>
         $(document).ready(function() {
             $.ajax({
                 type: 'POST',
                 url: "admin/getposition.php",
                 data: {
-                    spnsrid: < ? php echo $sid; ? >
+                    spnsrid: <?php echo $sid; ?>
                 },
                 dataType: "text",
                 success: function(result) {
@@ -252,10 +245,9 @@ $_SESSION['epid'] = $epin_decode;
                     }
                 }
             });
-        }); <
-        ?
-        php
-    } ? >
+        });
+    <?php
+    } ?>
 
     function usrplacement(spnsrid) {
         if (spnsrid != "") {
@@ -281,12 +273,9 @@ $_SESSION['epid'] = $epin_decode;
                 }
             });
 
-            <
-            ?
-            php
+            <?php
             if ($leg_selection == "manual") {
-                ?
-                >
+            ?>
                 $.ajax({
                     type: 'POST',
                     url: "admin/getposition.php",
@@ -320,10 +309,9 @@ $_SESSION['epid'] = $epin_decode;
                             $('#lrid').css('margin-top', '17px');
                         }
                     }
-                }); <
-                ?
-                php
-            } ? >
+                });
+            <?php
+            } ?>
         }
     }
 

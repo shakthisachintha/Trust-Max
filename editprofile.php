@@ -46,10 +46,29 @@ if (isset($_REQUEST['update2'])) {
     $cpcountry = isset($_REQUEST['cpcountry']) ? addslashes($_REQUEST['cpcountry']) : null;
     $cpstate = isset($_REQUEST['cpstate']) ? addslashes($_REQUEST['cpstate']) : null;
     $cppcity = isset($_REQUEST['cppcity']) ? addslashes($_REQUEST['cppcity']) : null;
-    $cpzipcode = isset($_REQUEST['cpzipcode']) ? addslashes($_REQUEST['cpzipcode']) : ' ';
+    $cpzipcode = isset($_REQUEST['czipcode']) ? addslashes($_REQUEST['czipcode']) : null;
 
+    echo $cpzipcode;
 
-    $insert = $db->insertrec("update mlm_register set user_dob='$date',user_phone='$phone',user_email='$email',user_accholdername='$holder',user_branch='$branch',user_ifsccode='$ifsccode',user_accno='$accno',user_bankname='$bank_name',user_commaddr1='$caddr1',user_commaddr2='$caddr2',user_city='$ccity',user_state='$cstate',user_country='$ccountry',user_postalcode='$czipcode' where user_id='$uid'");
+    $insert = $db->insertrec("update mlm_register set user_dob='$date',user_phone='$phone',
+	user_email='$email',
+	user_accholdername='$holder',
+	user_branch='$branch',
+	user_ifsccode='$ifsccode',
+	user_accno='$accno',
+	user_bankname='$bank_name',
+	user_commaddr1='$caddr1',
+	user_commaddr2='$caddr2',
+	user_city='$ccity',
+	user_state='$cstate',
+	user_country='$ccountry',
+	user_postalcode='$czipcode', 
+	user_paddr1='$cpaddr1',
+	user_paddr2='$cpaddr2',
+	user_pcity='$cppcity',
+	user_pstate='$cpstate',
+	user_pcountry='$cpcountry',
+	user_ppostalcode='$cpzipcode' where user_id='$uid'");
 
 
     if ($insert) {
@@ -68,21 +87,31 @@ if (isset($_REQUEST['update3'])) {
     $nname = addslashes($_REQUEST['nname']);
     $ncountry = addslashes($_REQUEST['ncountry']);
     $nstate = isset($_REQUEST['nstate']) ? addslashes($_REQUEST['nstate']) : null;
-    $ncity = isset($_REQUEST['ncity']) ? null : null;
-    $nzipcode = addslashes($_REQUEST['nzipcode']);
-    $nphone = addslashes($_REQUEST['nphone']);
-    $nemail = addslashes($_REQUEST['nemail']);
-    $naddr1 = addslashes($_REQUEST['naddr1']);
-    $naddr2 = addslashes($_REQUEST['naddr2']);
+    $ncity = isset($_REQUEST['ncity']) ? addslashes($_REQUEST['ncity']) : null;
+    $nzipcode = isset($_REQUEST['nzipcode']) ? addslashes($_REQUEST['nzipcode']) : null;
+    $nphone = isset($_REQUEST['nphone']) ? addslashes($_REQUEST['nphone']) : null;
+    $nemail = isset($_REQUEST['nemail']) ? addslashes($_REQUEST['nemail']) : null;
+    $naddr1 = isset($_REQUEST['naddr1']) ? addslashes($_REQUEST['naddr1']) : null;
+    $naddr2 = isset($_REQUEST['naddr2']) ? addslashes($_REQUEST['naddr2']) : null;
+    $ncnumber = isset($_REQUEST['ncnumber']) ? addslashes($_REQUEST['ncnumber']) : null;
 
-    $ncnumber = addslashes($_REQUEST['ncnumber']);
     if ($_REQUEST['icid'] == "others") {
         $nct = addslashes($_REQUEST['nctype']);
     } else {
         $nct = addslashes($_REQUEST['icid']);
     }
 
-    $insert = $db->insertrec("update mlm_register set user_nomineename='$nname',user_identifycardtype='$nct',user_idnumber='$ncnumber',user_naddr1='$naddr1',user_naddr2='$naddr2',user_ncountry='$ncountry',user_npostalcode='$nzipcode',user_nphone='$nphone',user_nemail='$nemail' where user_id='$uid'");
+    $insert = $db->insertrec("update mlm_register set user_nomineename='$nname',
+    user_identifycardtype='$nct',
+    user_idnumber='$ncnumber',
+    user_naddr1='$naddr1',
+    user_naddr2='$naddr2',
+    user_ncountry='$ncountry',
+    user_ncity='$ncity',
+    user_nstate='$nstate',
+    user_npostalcode='$nzipcode',
+    user_nphone='$nphone',
+    user_nemail='$nemail' where user_id='$uid'");
 
 
     if ($insert) {
@@ -310,7 +339,7 @@ if (isset($_REQUEST['submit'])) {
                             </div>
                             <div id="collapseTwo" class="panel-collapse p-3 collapse" role="tabpanel" aria-labelledby="headingTwo">
                                 <div class="panel-body">
-                                    <table>
+                                    <table cellpadding="7" cellspacing="0" border="0">
                                         <?php if (isset($_REQUEST['upsucc1'])) {  ?>
                                             <tr>
                                                 <td>&nbsp;</td>
@@ -571,7 +600,7 @@ if (isset($_REQUEST['submit'])) {
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td><strong>IBEN</strong></td>
+                                                <td><strong>IBAN</strong></td>
                                                 <td align="center">:</td>
                                                 <td>
                                                     <input class="form-control" type="text" name="ifsc_code" id="ifsc_code" value="<?php echo $userdetail['user_ifsccode']; ?>">
@@ -604,17 +633,8 @@ if (isset($_REQUEST['submit'])) {
                                                 <td><strong>Country </strong></td>
                                                 <td align="center">:</td>
                                                 <td>
-                                                    <select class="form-control" name="ccountry" id="ccountry" onchange="return showstate(this.value);">
-                                                        <option value="">--- Choose Country ---</option>
-                                                        <?php
+                                                    <input type="text" class="form-control" name="ccountry" id="ccountry" value="<?= $userdetail['user_country'] ?>">
 
-                                                        $sqlcon = $db->get_all("select * from mlm_country where country_status='1' order by country_name asc");
-                                                        foreach ($sqlcon as $rowcountry) {
-                                                        ?>
-                                                            <option value="<?php echo $rowcountry['country_id']; ?>" <?php if ($rowcountry['country_id'] == $userdetail['user_country']) {  ?> selected="selected" <?php } ?>><?php echo $rowcountry['country_name']; ?></option>
-
-                                                        <?php } ?>
-                                                    </select>
                                                 </td>
                                             </tr>
 
@@ -669,7 +689,7 @@ if (isset($_REQUEST['submit'])) {
                             </div>
                             <div id="collapseThree" class="panel-collapse p-3 collapse" role="tabpanel" aria-labelledby="headingThree">
                                 <div class="panel-body">
-                                    <table>
+                                    <table cellpadding="7" cellspacing="0" border="0" width="100%">
                                         <?php if (isset($_REQUEST['upsucc2'])) {  ?>
                                             <tr>
                                                 <td>&nbsp;</td>
@@ -752,18 +772,7 @@ if (isset($_REQUEST['submit'])) {
                                                 <td><strong>Country </strong></td>
                                                 <td align="center">:</td>
                                                 <td>
-                                                    <select class="form-control" name="ncountry" id="ncountry" onchange="return showstate1(this.value);">
-                                                        <option value="">--- Choose Country ---</option>
-                                                        <?php
-
-                                                        $nsqlcon = $db->get_all("select * from mlm_country where country_status='1' order by country_name asc");
-                                                        foreach ($nsqlcon as $nrowcountry) {
-                                                        ?>
-                                                            <option value="<?php echo $nrowcountry['country_id']; ?>" <?php if ($nrowcountry['country_id'] == $userdetail['user_ncountry']) {  ?> selected="selected" <?php } ?>><?php echo $nrowcountry['country_name']; ?></option>
-
-                                                        <?php } ?>
-
-                                                    </select>
+                                                    <input type="text" class="form-control" value="<?= $userdetail['user_ncountry'] ?>" name="ncountry" id="ncountry">
                                                 </td>
                                             </tr>
 

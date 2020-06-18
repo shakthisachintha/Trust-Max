@@ -61,9 +61,21 @@ if ($_SESSION['admin_id']==0) {
             <a href="<?="reward-plans.php"?>"><i class="icon-gift" aria-hidden="true"></i>
                 Reward Plans</a>
         </li>
+
+        <?php
+        $withdraw_reqs_count = $db->numrows("select * from mlm_withdrawrequsets where req_rpstatus='0'");
+        ?>
         <li>
             <a href="<?="withdraw_request.php"?>"><i class="icon-money" aria-hidden="true"></i>
-                Withdraw Requests</a>
+               
+            <?php if($withdraw_reqs_count>0): ?>
+                <span style="font-weight: bolder;"> Withdraw Requests </span>
+                    <span class="badge badge-primary"><?=$withdraw_reqs_count?></span>
+            <?php else:?>
+                  <span> Withdraw Requests </span>
+                  
+            <?endif;?>
+            </a>
         </li>
 
         <!--submenu-->

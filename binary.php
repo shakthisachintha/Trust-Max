@@ -34,30 +34,31 @@
                                     $left_uid = $db->singlerec("Select * from mlm_register where user_placementid='$id' and points_collected='0' and user_position='Left'");
                                     traverse($left_uid['user_profileid'], $db);
 
-                                    echo "<br> here " . $id . "<br>";
+                                    // echo "<br> here " . $id . "<br>";
 
                                     $right_uid = $db->singlerec("Select * from mlm_register where user_placementid='$id' and points_collected='0' and user_position='Right'");
                                     traverse($right_uid['user_profileid'], $db);
                                 }
                             }
 
-                            traverse($uid, $db);
+                            // traverse($uid, $db);
 
                             $left_user_count = $db->numrows("Select * from mlm_register where user_placementid='$uid' and points_collected='0' and user_position='Left'");
                             if ($left_user_count > 0) {
+                                // echo "Left $left_user_count";
                             }
                             $left_branch = $db->singlerec("Select * from mlm_register where user_placementid='$uid' and points_collected='0' and user_position='Left'");
                             // while()
                             $right_branch = $db->singlerec("Select * from mlm_register where user_placementid='$uid' and points_collected='0' and user_position='Left'");
                             ?>
-                            <div class="row">
+                            <!-- <div class="row">
                                 <div class="col">
                                     <h6>Left Branch Points : 20</h6>
                                 </div>
                                 <div class="col">
                                     <h6>Right Branch Points: 10</h6>
                                 </div>
-                            </div>
+                            </div> -->
                             <?php $ext_obj->usertree($uid, 0, 0); ?>
                         </div>
                     </div>

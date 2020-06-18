@@ -608,6 +608,7 @@ public function userPairsNew($profileid){
 		echo 'No Child found';
 	}
 }
+
 public function rec($id, $level){
 	GLOBAL $db;
 	$leftA = '';
@@ -914,5 +915,4 @@ while(list($key,$value)=@each($_POST)) {
 }
 while(list($key,$value)=@each($_GET)) {
     $$key=$value;
-}	
-?>
+}

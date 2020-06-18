@@ -53,10 +53,7 @@ color: #FFFFFF;'>&copy; Copyright " .date("Y")."&nbsp;"."<a href='$website_url/l
 
 $to=$prof_email;
 $res = $com_obj->commonMaildl($to,$subject,$msg);
-echo $to .' <br><br><br>';
-echo $subject .' <br><br><br><br>';
-echo $msg .' <br>';
-die();
+
  
 	echo "<script>location.href='forgot.php?succ'</script>";
 	}

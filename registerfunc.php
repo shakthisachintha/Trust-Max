@@ -44,8 +44,8 @@ if (isset($_REQUEST['registerone'])) {
     $com_obj->PlacementIDNew($sponsorid);
 	$placementid = $com_obj->placement['id'];
 	
-    // $user_position = $com_obj->placement['pos'];
-    $user_position = ucfirst($_REQUEST['tree_side']);
+    $user_position = $com_obj->placement['pos'];
+    // $user_position = ucfirst($_REQUEST['tree_side']);
     
     $ip = $_SERVER['REMOTE_ADDR'];
     $insert = $db->insertrec("INSERT INTO mlm_register (reward_plan,user_profileid, policy, ammount, user_fname, user_lname, user_email, user_password, user_sponsername,user_sponserid, user_placementid, user_position, user_pancard, user_date, user_ip, user_status) VALUES ('$reward','$profileid','$policy','$amount','$fName','$lName','$userEmail','$password', '$sponsorname', '$sponsorid', '$placementid', '$user_position', '$pancardnum', '$cur_date', '$ip_addr', '0')");

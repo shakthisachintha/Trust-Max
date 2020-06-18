@@ -18,7 +18,8 @@
             <div class="col-lg-8">
                 <div class="bg-white shadow-sm p-4">
                     <h4 class="mt-2 mb-4">Downline List</h4>
-                    <div class="table-responsive">
+                    <button onclick="return $('#downpay').toggle();" class="btn mb-3 btn-primary">Downline List</button>
+                    <div style="display: none;" id="downpay" class="table-responsive">
                         <table id="example1" class="table table-bordered" cellspacing="0" width="100%">
                             <thead>
                                 <tr>
