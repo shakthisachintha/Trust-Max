@@ -297,6 +297,7 @@ $withdraw = $available - $withdrawBal;
                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
                             <a class="nav-item nav-link active" id="nav-wr-tab" data-toggle="tab" href="#nav-wr" role="tab" aria-controls="nav-wr" aria-selected="true">Withdraw Requests</a>
                             <a class="nav-item nav-link" id="nav-cr-tab" data-toggle="tab" href="#nav-cr" role="tab" aria-controls="nav-cr" aria-selected="false">Cancelled Requests</a>
+                            <a class="nav-item nav-link" id="nav-at-tab" data-toggle="tab" href="#nav-at" role="tab" aria-controls="nav-at" aria-selected="false">Admin Transactions</a>
                         </div>
                     </nav>
                     <div class="tab-content" id="nav-tabContent">
@@ -457,7 +458,7 @@ $withdraw = $available - $withdrawBal;
 
 											<tr>
 												<td><?= $i; ?></td>
-												<td><?= $rreqq['req_message']; ?></td>
+												<td><?= $rreqq['reason']; ?></td>
 												<td><?= $rreqq['req_cvamount']; ?> USD</td>
 												<td><?= date("d-m-Y", strtotime($rreqq['req_date'])); ?></td>
 												<td class="font-weight-bold">
@@ -479,6 +480,42 @@ $withdraw = $available - $withdrawBal;
 
 								</table>
 							</div>
+                        </div>
+                        <div class="tab-pane fade show active" id="nav-at" role="tabpanel" aria-labelledby="nav-at-tab">
+                             
+                            <div class="row mt-3">
+                                <div class="col-12">
+                                     <h4 class="mb-3 navbar-inner" style="color:#091647; line-height:40px;">ADMIN TRANSACTIONS </span></h4>
+                                    <div class="table-responsive">
+                                        <table class="table table-hover"> 
+                                            <thead> 
+                                                <tr> 
+                                                    <th><strong>DR or CR</strong></th>
+                                                    <th>Amount</th>
+                                                    <th>Message</th>
+                                                    <th>Date</th>
+                                                </tr> 
+                                            </thead> 
+                                            <tbody> 
+                                                <?php foreach ($adminTrans as $key => $rec) { ?>
+                                                <tr> 
+                                                    <td><?php echo $rec['drCr'] ? 'DR' : 'CR' ?></td>
+                                                    <td><?php echo $rec['amount']?></td>
+                                                    <td><?php echo $rec['message']?></td>
+                                                    <td><?php echo $rec['submitted_at']?></td>
+                                                </tr>
+                                                <?php } ?>
+                                                <tr> 
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td class="font-weight-bold lead">Total: <?php echo $balance ?> USD</td>
+                                                </tr> 
+                                            </tbody> 
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

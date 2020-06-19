@@ -59,24 +59,26 @@ color: #000000;'>&copy; Copyright " . date("Y") . "&nbsp;" . "<a href='$website_
 	$com_obj->commonMail($to, $subject, $msg);
 
 	$reqType = 2;
-	if ($_REQUEST['reqType'] == 'a') {
+	if (isset($_REQUEST['reqType']) == 'a') {
 		$reqType = 1;
-	} else {
-		$reqType = 2;
-	}
-
-	if ($reqType == 2) {
-		$reqType = 2;
-		$reason = $_REQUEST['msg'];
-	
-		$cou = $db->insertrec("update mlm_withdrawrequsets set req_rpstatus='$reqType',reason='$reason' where req_id='$id'");
+		// $cou = $db->insertrec("update mlm_withdrawrequsets set req_rpstatus='$reqType' where req_id='$id'");
 	}
 	$cou = $db->insertrec("update mlm_withdrawrequsets set req_rpstatus='$reqType' where req_id='$id'");
+
 	//$user=$db->insertrec("update mlm_register set accumulated_bv='$balamt' where user_id='$reqfet[req_userid]'");
 	if ($cou) {
 		header("location:withdraw_request.php?upsucc");
 		echo "<script>window.location='withdraw_request.php?upsucc';</script>";
 	}
+}
+
+if (isset($_REQUEST['reject'])) {
+	$reason = $_REQUEST['msg'];
+	$id = $_REQUEST['reqID'];
+	$reqType = 2;
+	$cou = $db->insertrec("update mlm_withdrawrequsets set req_rpstatus='2',reason='$reason' where req_id='$id'");
+
+	header("location:withdraw_request.php?upsucc");
 }
 
 if (isset($_REQUEST['delete'])) {
@@ -471,7 +473,7 @@ if (isset($_POST['mul_delete'])) {
 											<td>
 												<?php echo $i; ?>
 											</td>
-											<td><?php echo $req_user['user_fname']; ?></td>
+											<td><?= $req_user['user_fname']; ?> (<?= $row_req['req_profileid']; ?>) <?= $row_req['req_id']; ?></td>
 
 											<td><?php echo $row_req['req_message']; ?></td>
 
@@ -489,7 +491,7 @@ if (isset($_POST['mul_delete'])) {
 														<a href="withdraw_request.php?reqType=a&&reqreply=<?php echo $row_req['req_id']; ?>">
 															Approve
 														</a>
-														<a style="cursor:pointer" onclick="reject('<?= $row_req['req_id']; ?>')" >
+														<a style="cursor:pointer" onclick="reject('<?= $row_req['req_id'] ?>')">
 															Reject
 														</a>
 													<?php } elseif ($row_req['req_rpstatus'] == 2) { ?>
@@ -524,7 +526,7 @@ if (isset($_POST['mul_delete'])) {
 							function reject(id) {
 								var reason = prompt("Reason for rejection?");
 								var URI_reason = encodeURI(reason);
-								window.location.href = "withdraw_request.php?reqType=r&&reqreply=<?= $row_req['req_id']; ?>&&msg="+URI_reason;
+								window.location.href = `withdraw_request.php?reject=r&reqID=${id}&msg=${URI_reason}`;
 							}
 						</script>
 						<div class="modal-footer">

@@ -137,7 +137,7 @@
 
                                                         </colgroup>
                                                         <tr>
-                                                            <td>Sponsors</td>
+                                                            <td>User ID</td>
                                                             <td>Paired At</td>
                                                         </tr>
                                                         <?php foreach ($sp['pairs'] as $key => $p) : ?>

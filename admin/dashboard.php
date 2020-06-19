@@ -1,11 +1,10 @@
-<?php 
-include("AMframe/config.php"); 
-include("includes/header.php"); 
-if((!isset($_SESSION['admin_id'])) && ($_SESSION[ 'admin_id']=="" ))
-{
-	header("location:index.php");
-} 
-$menu1='class="active"' ; 
+<?php
+include("AMframe/config.php");
+include("includes/header.php");
+if ((!isset($_SESSION['admin_id'])) && ($_SESSION['admin_id'] == "")) {
+    header("location:index.php");
+}
+$menu1 = 'class="active"';
 ?>
 
 
@@ -13,7 +12,7 @@ $menu1='class="active"' ;
     <a class="menu-toggler" id="menu-toggler" href="#">
         <span class="menu-text"></span>
     </a>
-    <?php include( "includes/sidebar.php"); ?>
+    <?php include("includes/sidebar.php"); ?>
 
     <div class="main-content">
         <div class="breadcrumbs" id="breadcrumbs">
@@ -23,8 +22,8 @@ $menu1='class="active"' ;
                     <a href="#">Home</a>
 
                     <span class="divider">
-								<i class="icon-angle-right arrow-icon"></i>
-							</span>
+                        <i class="icon-angle-right arrow-icon"></i>
+                    </span>
                 </li>
                 <li class="active">Dashboard</li>
             </ul>
@@ -33,12 +32,12 @@ $menu1='class="active"' ;
         <div class="page-content">
             <div class="page-header position-relative">
                 <h1>
-							Dashboard
-							<small>
-								<i class="icon-double-angle-right"></i>
-								overview &amp; stats
-							</small>
-						</h1>
+                    Dashboard
+                    <small>
+                        <i class="icon-double-angle-right"></i>
+                        overview &amp; stats
+                    </small>
+                </h1>
             </div>
             <!--/.page-header-->
 
@@ -53,213 +52,210 @@ $menu1='class="active"' ;
 
                         <i class="icon-ok green"></i> Welcome to
                         <strong class="green">
-									administrator
-									<small></small>
-								</strong>
+                            administrator
+                            <small></small>
+                        </strong>
                     </div>
 
-<?php 
-// users
-$numusers=$db->numrows("select user_fname from mlm_register where user_status != 5"); 
-// products
-$numproducts=$db->numrows("select pro_name from mlm_products"); 
-// stocks
-$numstocks=$db->numrows( "select stock_id from mlm_stocks");   
-// trans request
-$numtrans_requests=$db->numrows("select * from mlm_withdrawrequsets"); 
-//TDS value
-$trans=$db->singlerec("select SUM(req_cvamount*(tds_percent/100)) as tds_price from mlm_withdrawrequsets");
-// trans cancel
-$numtrans_cancel=$db->numrows("select * from mlm_withdrawrequsets where req_status=1"); 
-// news
-$numnews=$db->numrows("select * from mlm_news where news_status = 0"); 
-// product sale
-$numsales=$db->numrows("select pay_id from mlm_purchase where pay_payment=1");
+                    <?php
+                    // users
+                    $numusers = $db->numrows("select user_fname from mlm_register where user_status != 5");
+                    // products
+                    $numproducts = $db->numrows("select pro_name from mlm_products");
+                    // stocks
+                    $numstocks = $db->numrows("select stock_id from mlm_stocks");
+                    // trans request
+                    $numtrans_requests = $db->numrows("select * from mlm_withdrawrequsets");
+                    //TDS value
+                    $trans = $db->singlerec("select SUM(req_cvamount*(tds_percent/100)) as tds_price from mlm_withdrawrequsets");
+                    // trans cancel
+                    $numtrans_cancel = $db->numrows("select * from mlm_withdrawrequsets where req_status=1");
+                    // news
+                    $numnews = $db->numrows("select * from mlm_news where news_status = 0");
+                    // product sale
+                    $numsales = $db->numrows("select pay_id from mlm_purchase where pay_payment=1");
 
-$salesamount_sum=$db->extract_single("select SUM(pay_amount) as sum from mlm_purchase where pay_payment=1");
-$pstock_sum=$db->extract_single("select SUM(stock_count) as sum from mlm_stocks where stock_status=0");				
-$pstock_sum_a=$db->extract_single("select sum(mlm_stocks.stock_count * mlm_products.pro_cost) as sum from mlm_stocks,mlm_products where mlm_stocks.stock_proid = mlm_products.pro_id");
+                    $salesamount_sum = $db->extract_single("select SUM(pay_amount) as sum from mlm_purchase where pay_payment=1");
+                    $pstock_sum = $db->extract_single("select SUM(stock_count) as sum from mlm_stocks where stock_status=0");
+                    $pstock_sum_a = $db->extract_single("select sum(mlm_stocks.stock_count * mlm_products.pro_cost) as sum from mlm_stocks,mlm_products where mlm_stocks.stock_proid = mlm_products.pro_id");
 
-// product wastage
-$pw_waste_sum=$db->extract_single("select SUM(waste_count) as sum from mlm_wastage where waste_status=0");
-$pw_waste_sum_a=$db->extract_single("select sum(mlm_wastage.waste_count * mlm_products.pro_cost) as sum from mlm_wastage,mlm_products where mlm_wastage.waste_proid = mlm_products.pro_id");
+                    // product wastage
+                    $pw_waste_sum = $db->extract_single("select SUM(waste_count) as sum from mlm_wastage where waste_status=0");
+                    $pw_waste_sum_a = $db->extract_single("select sum(mlm_wastage.waste_count * mlm_products.pro_cost) as sum from mlm_wastage,mlm_products where mlm_wastage.waste_proid = mlm_products.pro_id");
 
-// inbox
-$newmail=$db->numrows("select * from mlm_outbox where outbox_toprofileid='Admin'");
-// read mail
-$readmail=$db->numrows("select * from mlm_outbox where (outbox_toprofileid='Admin' and outbox_status='0') and (outbox_fromstatus='0' and outbox_readstatus='1')");
-// testimonial
-$testimonial_num=$db->numrows("select * from mlm_testimonial where test_status = 0");
-// country
-$country_num=$db->numrows("select * from mlm_country where country_status = 0");
-// ads
-$ads_num=$db->numrows("select * from mlm_advertise where ad_status = 1");
-// Commission
-$commfetch=$db->singlerec("select * from mlm_basic_comission");
+                    // inbox
+                    $newmail = $db->numrows("select * from mlm_outbox where outbox_toprofileid='Admin'");
+                    // read mail
+                    $readmail = $db->numrows("select * from mlm_outbox where (outbox_toprofileid='Admin' and outbox_status='0') and (outbox_fromstatus='0' and outbox_readstatus='1')");
+                    // testimonial
+                    $testimonial_num = $db->numrows("select * from mlm_testimonial where test_status = 0");
+                    // country
+                    $country_num = $db->numrows("select * from mlm_country where country_status = 0");
+                    // ads
+                    $ads_num = $db->numrows("select * from mlm_advertise where ad_status = 1");
+                    // Commission
+                    $commfetch = $db->singlerec("select * from mlm_basic_comission");
 
-// DRL Income
-$drlIncome=$db->get_all("select status from mlm_drl");
-$drlAp = 0;
-$drlPe = 0;
-$drlRe = 0;
-foreach($drlIncome as $d){
-    if($d['status'] == 0){
-        $drlPe += 1;
-    }
-    if($d['status'] == 1){
-        $drlAp += 1;
-    }
-    if($d['status'] == 2){
-        $drlRe += 1;
-    }
-}
+                    // DRL Income
+                    $drlIncome = $db->get_all("select status from mlm_drl");
+                    $drlAp = 0;
+                    $drlPe = 0;
+                    $drlRe = 0;
+                    foreach ($drlIncome as $d) {
+                        if ($d['status'] == 0) {
+                            $drlPe += 1;
+                        }
+                        if ($d['status'] == 1) {
+                            $drlAp += 1;
+                        }
+                        if ($d['status'] == 2) {
+                            $drlRe += 1;
+                        }
+                    }
 
-if(isset($_REQUEST['submitTransaction']))
-{    
-    if(isset($_REQUEST['sponsor']) && !empty($_REQUEST['sponsor']) && 
-        isset($_REQUEST['amount']) && !empty($_REQUEST['amount']) && 
-        isset($_REQUEST['drCr']) && !empty($_REQUEST['drCr'])
-    ){
-        $sponsor = $_REQUEST['sponsor'];
-        $amount = $_REQUEST['amount'];
-        $drCr = $_REQUEST['drCr'];
-        $message = $_REQUEST['message'];
+                    if (isset($_REQUEST['submitTransaction'])) {
+                        if (
+                            isset($_REQUEST['sponsor'])&& 
+                            isset($_REQUEST['amount'])&& 
+                            isset($_REQUEST['drCr']) ) {
+                            $sponsor = $_REQUEST['sponsor'];
+                            $amount = $_REQUEST['amount'];
+                            $drCr = $_REQUEST['drCr'];
+                            $message = $_REQUEST['message'];
 
-        $date = date("Y-m-d");
+                            $date = date("Y-m-d");
 
-        $set = "user_id = '$sponsor'";
-        $set .= ", amount= '$amount'";
-        $set .= ", drCr= '$drCr'";
-        $set .= ", message= '$message'";
-        $set .= ", submitted_at= '$date'";
-        $insertrec=$db->insertrec("insert into mlm_transaction set $set");
-		header("location:dashboard.php?tnSs");
-    }
-	
-}
-if(isset($_REQUEST['submitDrl']))
-{    
-    if(isset($_REQUEST['ammount']) && !empty($_REQUEST['ammount']) && isset($_REQUEST['month']) && !empty($_REQUEST['month']) && isset($_REQUEST['id']) && !empty($_REQUEST['id'])){
-        $id = $_REQUEST['id'];
-        $amount = $_REQUEST['ammount'];
-        $month = $_REQUEST['month'];
-        $sponsor = $db->singlerec("select user_sponserid from mlm_register where user_profileid='$id'");
+                            $set = "user_id = '$sponsor'";
+                            $set .= ", amount= '$amount'";
+                            $set .= ", drCr= '$drCr'";
+                            $set .= ", message= '$message'";
+                            $set .= ", submitted_at= '$date'";
+                            $insertrec = $db->insertrec("insert into mlm_transaction set $set");
+                            header("location:dashboard.php?tnSs");
+                        }
+                    }
+                    if (isset($_REQUEST['submitDrl'])) {
+                        if (isset($_REQUEST['ammount']) && !empty($_REQUEST['ammount']) && isset($_REQUEST['month']) && !empty($_REQUEST['month']) && isset($_REQUEST['id']) && !empty($_REQUEST['id'])) {
+                            $id = $_REQUEST['id'];
+                            $amount = $_REQUEST['ammount'];
+                            $month = $_REQUEST['month'];
+                            $sponsor = $db->singlerec("select user_sponserid from mlm_register where user_profileid='$id'");
 
-        $date = date("Y-m-d");
-        $sponsor = $sponsor['user_sponserid'];
+                            $date = date("Y-m-d");
+                            $sponsor = $sponsor['user_sponserid'];
 
-        $set = "sponsor_id = '$sponsor'";
-        $set .= ", user_id= '$id'";
-        $set .= ", amount= '$amount'";
-        $set .= ", date= '$month'";
-        $set .= ", submitted_at= '$date'";
-        $insertrec=$db->insertrec("insert into mlm_drl set $set");
-		header("location:dashboard.php");
-    }
-	
-}
+                            $set = "sponsor_id = '$sponsor'";
+                            $set .= ", user_id= '$id'";
+                            $set .= ", amount= '$amount'";
+                            $set .= ", date= '$month'";
+                            $set .= ", submitted_at= '$date'";
+                            $insertrec = $db->insertrec("insert into mlm_drl set $set");
+                            header("location:dashboard.php");
+                        }
+                    }
 
-?>
-<style type="text/css">
-h2 {
-	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
-	font-size: 13pt;
-	color: navy;
-	padding-top: 12px;
-	padding-bottom: 3px;
-	margin: 5px;
-}
-table tr td {
-	padding: 7px;
-}
-</style>
+                    ?>
+                    <style type="text/css">
+                        h2 {
+                            font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+                            font-size: 13pt;
+                            color: navy;
+                            padding-top: 12px;
+                            padding-bottom: 3px;
+                            margin: 5px;
+                        }
 
-		<table  width="100%" align="center" cellpadding="0" cellspacing="0" border="0">
-            <tr>
-                <td width="33%" valign="top">
-                    <button data-toggle="collapse" data-target="#demo" class="btn btn-info">Admin Transaction</button>
-                    <div id="demo" class="collapse">
-                        <form action="" method="post">
-                            <br>
-                            <input type="text" name="sponsor" class="form-control" placeholder="Sponsor ID">
-                            <input type="number" name="amount" class="form-control" placeholder="Amount">
-                            <select name="drCr" id="">
-                                <option value="1">Debit</option>
-                                <option value="0">Credit</option>
-                            </select>
-                            <input type="text" name="message" placeholder="message">
-                            <br>
-                            <input type="submit" value="submit" name="submitTransaction">
-                        </form>
-                    </div>
-                </td>
-                <td width="33%" valign="top">
-                    <button data-toggle="collapse" data-target="#savingUpgrade" class="btn btn-info">Saving Upgrade</button>
-                    <div id="savingUpgrade" class="collapse">
-                        <form action="" method="post">
-                            <br>
-                            <div class="form-group">
-                                <label><b>User ID: <span class="required">*</span></b> </label>
-                                <div class="input-group">
-                                    <input class="form-control" type="text" name="id" required="true" />
+                        table tr td {
+                            padding: 7px;
+                        }
+                    </style>
+
+                    <table width="100%" align="center" cellpadding="0" cellspacing="0" border="0">
+                        <tr>
+                            <td width="33%" valign="top">
+                                <button data-toggle="collapse" data-target="#demo" class="btn btn-info">Admin Transaction</button>
+                                <div id="demo" class="collapse">
+                                    <form action="" method="post">
+                                        <br>
+                                        <input type="text" name="sponsor" class="form-control" placeholder="Sponsor ID">
+                                        <input type="number" name="amount" class="form-control" placeholder="Amount">
+                                        <select name="drCr" id="">
+                                            <option value="1">Debit</option>
+                                            <option value="0">Credit</option>
+                                        </select>
+                                        <input type="text" name="message" placeholder="message">
+                                        <br>
+                                        <input type="submit" value="submit" name="submitTransaction">
+                                    </form>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label><b>Ammount: <span class="required">*</span></b> </label>
-                                <div class="input-group">
-                                    <input class="form-control" type="number" name="ammount" required="true"  value="2020-05" />
+                            </td>
+                            <td width="33%" valign="top">
+                                <button data-toggle="collapse" data-target="#savingUpgrade" class="btn btn-info">Saving Upgrade</button>
+                                <div id="savingUpgrade" class="collapse">
+                                    <form action="" method="post">
+                                        <br>
+                                        <div class="form-group">
+                                            <label><b>User ID: <span class="required">*</span></b> </label>
+                                            <div class="input-group">
+                                                <input class="form-control" type="text" name="id" required="true" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label><b>Ammount: <span class="required">*</span></b> </label>
+                                            <div class="input-group">
+                                                <input class="form-control" type="number" name="ammount" required="true" value="2020-05" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label><b>For Month: <span class="required">*</span></b> </label>
+                                            <div class="input-group">
+                                                <input class="form-control" type="month" name="month" required="true" />
+                                            </div>
+                                        </div>
+                                        <input type="submit" value="submit" name="submitDrl">
+                                    </form>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label><b>For Month: <span class="required">*</span></b> </label>
-                                <div class="input-group">
-                                    <input class="form-control" type="month" name="month" required="true" />
-                                </div>
-                            </div>
-                            <input type="submit" value="submit" name="submitDrl">
-                        </form>
-                    </div>
-                </td>
-                <td width="33%" valign="top">
-                        
-                </td>
-						
-			</tr>
-			<tr>								                    
-				<td width="33%" valign="top">
-                        <br>
-                        <table width="100%" cellpadding="0" cellspacing="0" border="1" >
-							<tr style="background-color:#438EB9;color:#fff;font-weight:700;">
-								<td colspan="2" align="center">DRL Requests <span class="badge"><?php echo count($drlIncome); ?></span></td>
-							</tr>
-							<tr>
-								<td width="50%"><a href="drlRequest.php?p">Pening Request</a></td>
-								<td width="50%">
-                                    <span class="badge"><?php echo $drlPe; ?></span>
-								</td>
-							</tr>
-							<tr>
-								<td width="50%"><a href="drlRequest.php?a">Approved Request's</a></td>
-								<td width="50%">
-                                    <span class="badge"><?php echo $drlAp; ?></span>
-								</td>
-							</tr>
-							<tr>
-								<td width="50%"><a href="drlRequest.php?r">Rejected Request</a></td>
-								<td width="50%">
-                                    <span class="badge"><?php echo $drlRe; ?></span>
-								</td>
-							</tr>
-						</table>
-				</td>
-				<td width="33%" valign="top">
-					
-				</td>
-				<td width="33%" valign="top">
-							
-				</td>
-			</tr>
-		</table>
+                            </td>
+                            <td width="33%" valign="top">
+
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td width="33%" valign="top">
+                                <br>
+                                <table width="100%" cellpadding="0" cellspacing="0" border="1">
+                                    <tr style="background-color:#438EB9;color:#fff;font-weight:700;">
+                                        <td colspan="2" align="center">DRL Requests <span class="badge"><?php echo count($drlIncome); ?></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="50%"><a href="drlRequest.php?p">Pening Request</a></td>
+                                        <td width="50%">
+                                            <span class="badge"><?php echo $drlPe; ?></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="50%"><a href="drlRequest.php?a">Approved Request's</a></td>
+                                        <td width="50%">
+                                            <span class="badge"><?php echo $drlAp; ?></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="50%"><a href="drlRequest.php?r">Rejected Request</a></td>
+                                        <td width="50%">
+                                            <span class="badge"><?php echo $drlRe; ?></span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td width="33%" valign="top">
+
+                            </td>
+                            <td width="33%" valign="top">
+
+                            </td>
+                        </tr>
+                    </table>
                     <!--/row-->
                     <!--/row-->
                     <!--PAGE CONTENT ENDS-->
@@ -606,4 +602,5 @@ table tr td {
     })
 </script>
 </body>
+
 </html>
